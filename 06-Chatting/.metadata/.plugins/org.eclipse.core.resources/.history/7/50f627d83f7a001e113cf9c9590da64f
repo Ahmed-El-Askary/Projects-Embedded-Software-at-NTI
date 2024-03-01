@@ -1,0 +1,69 @@
+/*
+ ============================================================================
+ Module      : ICU
+ File Name   : ICU.c
+ Description : Header file for the AVR ICU driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+#include "std_types.h"
+#include "common_macros.h"
+#include "ICU_private.h"
+#include "ICU_config.h"
+#include "ICU.h"
+#include "EXT_Interrupt.h"
+/*******************************************************************************
+ *                                    ICU                                       *
+ *******************************************************************************/
+
+/*******************************************************************************
+ *                               Global Variables                                  *
+ *******************************************************************************/
+static void (*Timer1_ICU_Fptr) (void)=NULL_PTR;
+
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+
+void Timer1_InputCaptureEdge(ICU_Edge_type edge)
+{
+	if(edge==ICU_RISING)
+	{
+		SET_BIT(TCCR1B,ICES1);
+	}
+	else if (edge==ICU_FALLING)
+	{
+
+		CLEAR_BIT(TCCR1B,ICES1);
+	}
+}
+
+void Timer1_ICU_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,TICIE1);
+}
+void Timer1_ICU_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,TICIE1);
+}
+
+
+/*******************************************************************************
+ *                       Interrupt Service Routines                            *
+ *******************************************************************************/
+void Timer1_ICU_SetCallBack(void(*LocalFptr)(void))
+{
+	Timer1_ICU_Fptr=LocalFptr;
+}
+
+
+ISR(TIMER1_ICU_vect)
+{
+	if(Timer1_ICU_Fptr!=NULL_PTR)
+	{
+		Timer1_ICU_Fptr();
+	}
+}

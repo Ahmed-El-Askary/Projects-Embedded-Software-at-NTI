@@ -1,0 +1,316 @@
+//
+//#include <avr/io.h>
+//#include <avr/interrupt.h>
+//#include <util/delay.h>
+//
+//unsigned char count_flag = 0;
+//unsigned char count_1 = 0;
+//unsigned char count_2 = 0;
+//
+//void INT1_Init(void)
+//{
+//    // Configure INT1/PD3 as input pin
+//    DDRD &= ~(1 << PD3);
+//    // Trigger INT1 with the raising edge
+//    MCUCR |= (1 << ISC10);
+//    MCUCR |= (1 << ISC11);
+//    // Enable external interrupt pin INT1
+//    GICR |= (1 << INT1);
+//}
+//
+//ISR(INT1_vect)
+//{
+//    count_flag = 1;
+//}
+//
+//void displayNumber(unsigned char number)
+//{
+//    PORTA = (PORTA & 0xFC) | 0x01;
+//    PORTC = (PORTC & 0xF0) | (number % 10);
+//    _delay_ms(2);
+//
+//    PORTA = (PORTA & 0xFC) | 0x02;
+//    PORTC = (PORTC & 0xF0) | (number / 10);
+//    _delay_ms(2);
+//}
+//
+//int main(void)
+//{
+//    DDRA |= 0x03; // Set PA0 and PA1 as output
+//    DDRC |= 0x0F; // Set PC0-PC3 as output
+//
+//    PORTA |= 0x03; // Set PA0 and PA1 high (turn off the display)
+//    PORTC &= 0xF0; // Set PC0-PC3 low
+//
+//    SREG |= (1 << 7); // Enable global interrupts
+//
+//    INT1_Init(); // Initialize INT1
+//
+//    while (1)
+//    {
+//        if (count_flag == 1)
+//        {
+//            count_1++;
+//            if (count_1 == 10)
+//            {
+//                count_1 = 0;
+//                count_2++;
+//                if (count_2 == 10)
+//                {
+//                    count_2 = 0;
+//                }
+//            }
+//            count_flag = 0;
+//        }
+//
+//        displayNumber(count_2 * 10 + count_1);
+//    }
+//}
+
+
+//#include <avr/io.h>
+//#include <avr/interrupt.h>
+//#include <util/delay.h>
+//
+//unsigned char count_flag = 0;
+//unsigned char count_1 = 0;
+//unsigned char count_2 = 0;
+//
+//void INT1_Init(void)
+//{
+//    // Configure INT1/PD3 as input pin
+//    DDRD &= ~(1 << PD3);
+//    // Trigger INT1 with the raising edge
+//    MCUCR |= (1 << ISC10);
+//    MCUCR |= (1 << ISC11);
+//    // Enable external interrupt pin INT1
+//    GICR |= (1 << INT1);
+//}
+//
+//void LED_Init(void)
+//{
+//    // Configure LED/PC4 as output pin
+//    DDRC |= (1 << PC4);
+//}
+//
+//ISR(INT1_vect)
+//{
+//    count_flag = 1;
+//    PORTC ^= (1 << PC4); // Toggle LED
+//}
+//
+//void displayNumber(unsigned char number)
+//{
+//    PORTA = (PORTA & 0xFC) | 0x01;
+//    PORTC = (PORTC & 0xF0) | (number % 10);
+//    _delay_ms(2);
+//
+//    PORTA = (PORTA & 0xFC) | 0x02;
+//    PORTC = (PORTC & 0xF0) | (number / 10);
+//    _delay_ms(2);
+//}
+//
+//int main(void)
+//{
+//    DDRA |= 0x03; // Set PA0 and PA1 as output
+//    DDRC |= 0x1F; // Set PC0-PC4 as output
+//
+//    PORTA |= 0x03; // Set PA0 and PA1 high (turn off the display)
+//    PORTC &= 0xF0; // Set PC0-PC3 low
+//
+//    SREG |= (1 << 7); // Enable global interrupts
+//
+//    INT1_Init(); // Initialize INT1
+//    LED_Init();  // Initialize LED
+//
+//    while (1)
+//    {
+//        if (count_flag == 1)
+//        {
+//            count_1++;
+//            if (count_1 == 10)
+//            {
+//                count_1 = 0;
+//                count_2++;
+//                if (count_2 == 10)
+//                {
+//                    count_2 = 0;
+//                }
+//            }
+//            count_flag = 0;
+//        }
+//
+//        displayNumber(count_2 * 10 + count_1);
+//    }
+//}
+
+
+//#include <avr/io.h>
+//#include <avr/interrupt.h>
+//#include <util/delay.h>
+//
+//unsigned char count_flag = 0;
+//unsigned char count_1 = 0;
+//unsigned char count_2 = 0;
+//
+//void INT1_Init(void)
+//{
+//    // Configure INT1/PD3 as input pin
+//    DDRD &= ~(1 << PD3);
+//    // Trigger INT1 with the raising edge
+//    MCUCR |= (1 << ISC10);
+//    MCUCR |= (1 << ISC11);
+//    // Enable external interrupt pin INT1
+//    GICR |= (1 << INT1);
+//}
+//
+//void LED_Init(void)
+//{
+//    // Configure LED/PC4 and PC5 as output pins
+//    DDRC |= (1 << PC4) | (1 << PC5);
+//}
+//
+//ISR(INT1_vect)
+//{
+//    if (count_flag == 0)
+//    {
+//        count_flag = 1;
+//        PORTC |= (1 << PC5); // Turn off the release LED
+//        PORTC ^= (1 << PC4);  // Toggle the count LED
+//    }
+//}
+//
+//void displayNumber(unsigned char number)
+//{
+//    PORTA = (PORTA & 0xFC) | 0x01;
+//    PORTC = (PORTC & 0xF0) | (number % 10);
+//    _delay_ms(2);
+//
+//    PORTA = (PORTA & 0xFC) | 0x02;
+//    PORTC = (PORTC & 0xF0) | (number / 10);
+//    _delay_ms(2);
+//}
+//
+//int main(void)
+//{
+//    DDRA |= 0x03; // Set PA0 and PA1 as output
+//    DDRC |= 0x3F; // Set PC0-PC5 as output
+//
+//    PORTA |= 0x03; // Set PA0 and PA1 high (turn off the display)
+//    PORTC &= 0xF0; // Set PC0-PC3 low
+//
+//    SREG |= (1 << 7); // Enable global interrupts
+//
+//    INT1_Init(); // Initialize INT1
+//    LED_Init();  // Initialize LEDs
+//
+//    while (1)
+//    {
+//        if (count_flag == 1)
+//        {
+//            count_1++;
+//            if (count_1 == 10)
+//            {
+//                count_1 = 0;
+//                count_2++;
+//                if (count_2 == 10)
+//                {
+//                    count_2 = 0;
+//                }
+//            }
+//            count_flag = 0;
+//        }
+//
+//        displayNumber(count_2 * 10 + count_1);
+//    }
+//}
+
+
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
+unsigned char button_state = 0;
+unsigned char count_flag = 0;
+unsigned char count_1 = 0;
+unsigned char count_2 = 0;
+
+void INT1_Init(void)
+{
+    // Configure INT1/PD3 as input pin
+    DDRD &= ~(1 << PD3);
+    // Trigger INT1 with the raising edge
+    MCUCR |= (1 << ISC10);
+    MCUCR |= (1 << ISC11);
+    // Enable external interrupt pin INT1
+    GICR |= (1 << INT1);
+}
+
+void LED_Init(void)
+{
+    // Configure LED/PC4 and PC5 as output pins
+    DDRC |= (1 << PC4) | (1 << PC5);
+}
+
+ISR(INT1_vect)
+{
+    if (button_state == 0)
+    {
+        button_state = 1;
+        PORTC |= (1 << PC4);  // Turn on the pressed LED
+        PORTC &= ~(1 << PC5); // Turn off the released LED
+    }
+    else
+    {
+        button_state = 0;
+        PORTC |= (1 << PC5);  // Turn on the released LED
+        PORTC &= ~(1 << PC4); // Turn off the pressed LED
+        count_flag = 1;
+    }
+}
+
+void displayNumber(unsigned char number)
+{
+    PORTA = (PORTA & 0xFC) | 0x01;
+    PORTC = (PORTC & 0xF0) | (number % 10);
+    _delay_ms(2);
+
+    PORTA = (PORTA & 0xFC) | 0x02;
+    PORTC = (PORTC & 0xF0) | (number / 10);
+    _delay_ms(2);
+}
+
+int main(void)
+{
+    DDRA |= 0x03; // Set PA0 and PA1 as output
+    DDRC |= 0x3F; // Set PC0-PC5 as output
+
+    PORTA |= 0x03; // Set PA0 and PA1 high (turn off the display)
+    PORTC &= 0xF0; // Set PC0-PC3 low
+
+    SREG |= (1 << 7); // Enable global interrupts
+
+    INT1_Init(); // Initialize INT1
+    LED_Init();  // Initialize LEDs
+
+    while (1)
+    {
+        if (count_flag == 1)
+        {
+            count_1++;
+            if (count_1 == 10)
+            {
+                count_1 = 0;
+                count_2++;
+                if (count_2 == 10)
+                {
+                    count_2 = 0;
+                }
+            }
+            count_flag = 0;
+        }
+
+        displayNumber(count_2 * 10 + count_1);
+    }
+}

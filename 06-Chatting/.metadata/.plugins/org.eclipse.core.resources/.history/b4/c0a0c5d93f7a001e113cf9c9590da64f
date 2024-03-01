@@ -1,0 +1,437 @@
+/*
+ ============================================================================
+ Module      : TIMER
+ File Name   : TIMER.c
+ Description : Header file for the AVR TIMER driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+#include "TIMER.h"
+
+
+
+/*******************************************************************************
+ *                                    TIMER0                                       *
+ *******************************************************************************/
+
+/*******************************************************************************
+ *                           Global Variables                                  *
+ *******************************************************************************/
+static void (*TIMER0_OV_Fptr) (void)=NULL_PTR;
+static void (*TIMER0_OC_Fptr) (void)=NULL_PTR;
+
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+
+void TIMER0_Init(Timer0_Mode mode,Timer0_Prescaler scaler)
+{
+	switch (mode)
+	{
+	case T0_NORMAL_MODE:
+		CLEAR_BIT(TCCR0,WGM00);
+		CLEAR_BIT(TCCR0,WGM01);
+		break;
+	case T0_PHASECORRECT_MODE:
+		SET_BIT(TCCR0,WGM00);
+		CLEAR_BIT(TCCR0,WGM01);
+		break;
+	case T0_CTC_MODE:
+		CLEAR_BIT(TCCR0,WGM00);
+		SET_BIT(TCCR0,WGM01);
+		break;
+	case T0_FASTPWM_MODE:
+		SET_BIT(TCCR0,WGM00);
+		SET_BIT(TCCR0,WGM01);
+		break;
+	}
+
+	TCCR0&=0XF8;//0b11111000
+	TCCR0|=scaler;
+}
+
+
+void TIMER0_OC0Mode(OC0_type mode)
+{
+	switch(mode)
+	{
+	case T0_DISCONNECTED:
+		CLEAR_BIT(TCCR0,COM00);
+		CLEAR_BIT(TCCR0,COM01);
+		break;
+	case T0_TOGGLE:
+		SET_BIT(TCCR0,COM00);
+		CLEAR_BIT(TCCR0,COM01);
+		break;
+	case T0_NON_INVERTING:
+		CLEAR_BIT(TCCR0,COM00);
+		SET_BIT(TCCR0,COM01);
+		break;
+	case T0_INVERTING:
+		SET_BIT(TCCR0,COM00);
+		SET_BIT(TCCR0,COM01);
+		break;
+	}
+}
+
+
+
+void TIMER0_OV_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,TOIE0);
+}
+void TIMER0_OV_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,TOIE0);
+}
+void TIMER0_OC_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,OCIE0);
+}
+void TIMER0_OC_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,OCIE0);
+}
+
+
+/*******************************************************************************
+ *                       Interrupt Service Routines                            *
+ *******************************************************************************/
+
+void TIMER0_OV_SetCallBack(void(*local_fptr)(void))
+{
+	TIMER0_OV_Fptr = local_fptr ;
+}
+
+
+void TIMER0_OC_SetCallBack(void(*local_fptr)(void))
+{
+	TIMER0_OC_Fptr = local_fptr ;
+}
+
+
+
+
+ISR(TIMER0_OVF_vect)
+{
+	if ( TIMER0_OV_Fptr != NULL_PTR )
+	{
+		TIMER0_OV_Fptr();
+	}
+}
+
+
+ISR(TIMER0_OC_vect)
+{
+	if ( TIMER0_OC_Fptr != NULL_PTR )
+	{
+		TIMER0_OC_Fptr();
+	}
+}
+
+
+/*******************************************************************************
+ *                                    TIMER2                                      *
+ *******************************************************************************/
+
+/*******************************************************************************
+ *                           Global Variables                                  *
+ *******************************************************************************/
+
+static void (*TIMER2_OV_Fptr) (void)=NULL_PTR;
+static void (*TIMER2_OC_Fptr) (void)=NULL_PTR;
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+
+
+void TIMER2_Init(Timer2_Mode mode,Timer2_Prescaler scaler)
+{
+	switch (mode)
+	{
+	case T2_NORMAL_MODE:
+		CLEAR_BIT(TCCR2,WGM20);
+		CLEAR_BIT(TCCR2,WGM21);
+		break;
+	case T2_PHASECORRECT_MODE:
+		SET_BIT(TCCR2,WGM20);
+		CLEAR_BIT(TCCR2,WGM21);
+		break;
+	case T2_CTC_MODE:
+		CLEAR_BIT(TCCR2,WGM20);
+		SET_BIT(TCCR2,WGM21);
+		break;
+	case T2_FASTPWM_MODE:
+		SET_BIT(TCCR2,WGM20);
+		SET_BIT(TCCR2,WGM21);
+		break;
+	}
+
+	TCCR2&=0XF8;//0b11111000
+	TCCR2|=scaler;
+}
+
+
+void TIMER2_OC2Mode(OC2_type mode)
+{
+	switch(mode)
+	{
+	case OC0_DISCONNECTED:
+		CLEAR_BIT(TCCR2,WGM20);
+		CLEAR_BIT(TCCR2,WGM21);
+		break;
+	case OC0_TOGGLE:
+		SET_BIT(TCCR2,WGM20);
+		CLEAR_BIT(TCCR2,WGM21);
+		break;
+	case OC0_NON_INVERTING:
+		CLEAR_BIT(TCCR2,WGM20);
+		SET_BIT(TCCR2,WGM21);
+		break;
+	case OC0_INVERTING:
+		SET_BIT(TCCR2,WGM21);
+		SET_BIT(TCCR2,WGM20);
+		break;
+	}
+}
+
+
+
+void TIMER2_OV_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,TOIE2);
+}
+void TIMER2_OV_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,TOIE2);
+}
+void TIMER2_OC_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,OCIE2);
+}
+void TIMER2_OC_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,OCIE2);
+}
+
+
+/*******************************************************************************
+ *                       Interrupt Service Routines                            *
+ *******************************************************************************/
+
+void TIMER2_OV_SetCallBack(void(*local_fptr)(void))
+{
+	TIMER2_OV_Fptr = local_fptr ;
+}
+
+
+void TIMER2_OC_SetCallBack(void(*local_fptr)(void))
+{
+	TIMER2_OC_Fptr = local_fptr ;
+}
+
+
+
+
+ISR(TIMER2_OVF_vect)
+{
+	if ( TIMER2_OV_Fptr != NULL_PTR )
+	{
+		TIMER2_OV_Fptr();
+	}
+}
+
+
+ISR(TIMER2_COMP_vect)
+{
+	if ( TIMER2_OC_Fptr != NULL_PTR )
+	{
+		TIMER2_OC_Fptr();
+	}
+}
+
+
+
+
+
+/*******************************************************************************
+ *                                    TIMER1                                       *
+ *******************************************************************************/
+
+
+/*******************************************************************************
+ *                           Global Variables                                  *
+ *******************************************************************************/
+
+static void (*Timer1_OVF_Fptr) (void)=NULL_PTR;
+static void (*Timer1_OCA_Fptr) (void)=NULL_PTR;
+static void (*Timer1_OCB_Fptr) (void)=NULL_PTR;
+/*******************************************************************************
+ *                      Functions Definitions                                  *
+ *******************************************************************************/
+
+
+void Timer1_Init( Timer1_type mode,Timer1_Prescaler scaler)
+{
+	switch (mode)
+	{
+	case T1_NORMAL_MODE:
+		CLEAR_BIT(TCCR1A,WGM10);
+		CLEAR_BIT(TCCR1A,WGM11);
+		CLEAR_BIT(TCCR1B,WGM12);
+		CLEAR_BIT(TCCR1B,WGM13);
+		break;
+	case T1_CTC_ICR_TOP_MODE:
+		CLEAR_BIT(TCCR1A,WGM10);
+		CLEAR_BIT(TCCR1A,WGM11);
+		SET_BIT(TCCR1B,WGM12);
+		SET_BIT(TCCR1B,WGM13);
+		break;
+
+	case T1_CTC_OCRA_TOP_MODE:
+		CLEAR_BIT(TCCR1A,WGM10);
+		CLEAR_BIT(TCCR1A,WGM11);
+		SET_BIT(TCCR1B,WGM12);
+		CLEAR_BIT(TCCR1B,WGM13);
+		break;
+
+	case T1_FASTPWM_ICR_TOP_MODE:
+		CLEAR_BIT(TCCR1A,WGM10);
+		SET_BIT(TCCR1A,WGM11);
+		SET_BIT(TCCR1B,WGM12);
+		SET_BIT(TCCR1B,WGM13);
+		break;
+
+	case T1_FASTPWM_OCRA_TOP_MODE:
+		SET_BIT(TCCR1A,WGM10);
+		SET_BIT(TCCR1A,WGM11);
+		SET_BIT(TCCR1B,WGM12);
+		SET_BIT(TCCR1B,WGM13);
+		break;
+	}
+
+	TCCR1B&=0XF8;
+	TCCR1B|=scaler;
+
+}
+
+
+void Timer1_OCRA1Mode(OC1A_type oc1a_mode)
+{
+	switch (oc1a_mode)
+	{
+	case OC1A_DISCONNECTED:
+		CLEAR_BIT(TCCR1A,COM1A0);
+		CLEAR_BIT(TCCR1A,COM1A1);
+		break;
+	case OC1A_TOGGLE:
+		SET_BIT(TCCR1A,COM1A0);
+		CLEAR_BIT(TCCR1A,COM1A1);
+		break;
+	case OC1A_NON_INVERTING:
+		CLEAR_BIT(TCCR1A,COM1A0);
+		SET_BIT(TCCR1A,COM1A1);
+		break;
+	case OC1A_INVERTING:
+		SET_BIT(TCCR1A,COM1A0);
+		SET_BIT(TCCR1A,COM1A1);
+		break;
+	}
+}
+
+void Timer1_OCRB1Mode(OC1B_type oc1b_mode)
+{
+	switch (oc1b_mode)
+	{
+	case OC1B_DISCONNECTED:
+		CLEAR_BIT(TCCR1A,COM1B0);
+		CLEAR_BIT(TCCR1A,COM1B1);
+		break;
+	case OC1B_TOGGLE:
+		SET_BIT(TCCR1A,COM1B0);
+		CLEAR_BIT(TCCR1A,COM1B1);
+		break;
+	case OC1B_NON_INVERTING:
+		CLEAR_BIT(TCCR1A,COM1B0);
+		SET_BIT(TCCR1A,COM1B1);
+		break;
+	case OC1B_INVERTING:
+		SET_BIT(TCCR1A,COM1B0);
+		SET_BIT(TCCR1A,COM1B1);
+		break;
+	}
+}
+
+
+void Timer1_OVF_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,TOIE1);
+}
+void Timer1_OVF_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,TOIE1);
+}
+void Timer1_OCA_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,OCIE1A);
+}
+void Timer1_OCA_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,OCIE1A);
+}
+void Timer1_OCB_InterruptEnable(void)
+{
+	SET_BIT(TIMSK,OCIE1B);
+}
+void Timer1_OCB_InterruptDisable(void)
+{
+	CLEAR_BIT(TIMSK,OCIE1B);
+}
+
+
+
+
+/*******************************************************************************
+ *                       Interrupt Service Routines                            *
+ *******************************************************************************/
+void Timer1_OVF_SetCallBack(void(*LocalFptr)(void))
+{
+	Timer1_OVF_Fptr=LocalFptr;
+}
+void Timer1_OCA_SetCallBack(void(*LocalFptr)(void))
+{
+	Timer1_OCA_Fptr=LocalFptr;
+}
+void Timer1_OCB_SetCallBack(void(*LocalFptr)(void))
+{
+	Timer1_OCB_Fptr=LocalFptr;
+}
+
+
+
+ISR(TIMER1_OVF_vect)
+{
+	if(Timer1_OVF_Fptr!=NULL_PTR)
+	{
+		Timer1_OVF_Fptr();
+	}
+}
+ISR(TIMER1_OCA_vect)
+{
+	if(Timer1_OCA_Fptr!=NULL_PTR)
+	{
+		Timer1_OCA_Fptr();
+	}
+}
+ISR(TIMER1_OCB_vect)
+{
+	if(Timer1_OCB_Fptr!=NULL_PTR)
+	{
+		Timer1_OCB_Fptr();
+	}
+}
+
+

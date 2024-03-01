@@ -1,0 +1,18 @@
+/*
+ ============================================================================
+ Module      : KEYPAD
+ File Name   : KEYPAD_private.h
+ Description : Header file private for the AVR KEYPAD driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+#ifndef KEYPAD_DRIVER_KEYPAD_PRIVATE_H_
+#define KEYPAD_DRIVER_KEYPAD_PRIVATE_H_
+
+
+
+
+
+#endif /* KEYPAD_DRIVER_KEYPAD_PRIVATE_H_ */

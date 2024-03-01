@@ -1,0 +1,17 @@
+09:57:50 **** Incremental Build of configuration Debug for project Battery_System ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Battery_System.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:   10976 bytes (33.5% Full)
+(.text + .data + .bootloader)
+
+Data:         38 bytes (1.9% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 

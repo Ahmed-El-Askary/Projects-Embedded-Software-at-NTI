@@ -1,0 +1,37 @@
+/*
+ ================================================================================================
+ Name        : Main_app.c
+ Author      : Ahmed El-Askary.
+ Description :
+ Date        : 24/10/2023.
+ ================================================================================================
+ */
+#include "UART.h"
+#include "DIO.h"
+
+int main(void)
+{
+	u8 Str[20];
+	DIO_setupPinDirection(PORTA_ID, PIN0, PIN_OUTPUT);
+	CLEAR_BIT(PORTA , PIN0);
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+
+
+	while(1)
+	{
+        UART_sendString(Str);
+
+		UART_receiveString(Str);
+
+		if (UART_receiveString(Str) == 0)
+		{
+			SET_BIT(PORTA, PIN0);
+		}
+		else
+		{
+			CLEAR_BIT(PORTA, PIN0);
+		}
+	}
+}

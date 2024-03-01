@@ -1,0 +1,13 @@
+/*
+ * ADC_private.h
+ *
+ *  Created on: Oct 24, 2023
+ *      Author: DELL
+ */
+
+#ifndef ADC_DRIVER_ADC_PRIVATE_H_
+#define ADC_DRIVER_ADC_PRIVATE_H_
+
+
+
+#endif /* ADC_DRIVER_ADC_PRIVATE_H_ */

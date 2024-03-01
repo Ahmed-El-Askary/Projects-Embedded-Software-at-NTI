@@ -1,0 +1,20 @@
+/*
+ ============================================================================
+ Module      : ICU
+ File Name   : ICU_config.h
+ Description : Header file for the AVR ICU driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+#ifndef ICU_DRIVER_ICU_CONFIG_H_
+#define ICU_DRIVER_ICU_CONFIG_H_
+
+
+#define TIMER1_ICU_READ(x)      (*(u16*)x=ICR1)
+#define TIMER1_ICU_write(x)     (ICR1=(u16)x)
+
+
+
+#endif /* ICU_DRIVER_ICU_CONFIG_H_ */

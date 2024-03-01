@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;State_Motor_ws/MCAL/EXT_Interrupt_Driver&apos;" deleteContents="false" description="Delete resource &apos;State_Motor_ws/MCAL/EXT_Interrupt_Driver&apos;" element1="/State_Motor_ws/MCAL/EXT_Interrupt_Driver" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1698396107730"/>
+</session>

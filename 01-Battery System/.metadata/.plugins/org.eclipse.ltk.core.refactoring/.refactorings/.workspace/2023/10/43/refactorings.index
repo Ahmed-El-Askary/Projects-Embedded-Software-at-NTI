@@ -1,0 +1,7 @@
+1698336141748	Delete resource 'Battery System/HAL/LDR_Driver'
+1698413489651	Delete resource 'Battery System/MCAL/EXT_Interrupt_Driver'
+1698414146184	Delete resource 'Battery System/HAL/ADC_Driver'
+1698426986021	Delete resource 'Battery System/HAL/LCD_Driver'
+1698427585450	Delete resource 'Battery System/MCAL/ADC_Driver'
+1698427593269	Delete resource 'Battery System/MCAL/DIO_Driver'
+1698432398119	Rename resource 'Battery System'

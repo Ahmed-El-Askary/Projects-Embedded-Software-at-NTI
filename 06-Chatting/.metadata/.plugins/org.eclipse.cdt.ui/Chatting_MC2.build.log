@@ -1,0 +1,66 @@
+00:15:08 **** Build of configuration Debug for project Chatting_MC2 ****
+make all 
+Building file: ../MCAL/UART/UART.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\APP" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\SPI_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/UART/UART.d" -MT"MCAL/UART/UART.o" -c -o "MCAL/UART/UART.o" "../MCAL/UART/UART.c"
+Finished building: ../MCAL/UART/UART.c
+ 
+Building file: ../MCAL/SPI_Driver/SPI.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\APP" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\SPI_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/SPI_Driver/SPI.d" -MT"MCAL/SPI_Driver/SPI.o" -c -o "MCAL/SPI_Driver/SPI.o" "../MCAL/SPI_Driver/SPI.c"
+Finished building: ../MCAL/SPI_Driver/SPI.c
+ 
+Building file: ../MCAL/DIO_Driver/DIO.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\APP" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\SPI_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/DIO_Driver/DIO.d" -MT"MCAL/DIO_Driver/DIO.o" -c -o "MCAL/DIO_Driver/DIO.o" "../MCAL/DIO_Driver/DIO.c"
+Finished building: ../MCAL/DIO_Driver/DIO.c
+ 
+Building file: ../HAL/LCD_Driver/LCD.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\APP" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\SPI_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"HAL/LCD_Driver/LCD.d" -MT"HAL/LCD_Driver/LCD.o" -c -o "HAL/LCD_Driver/LCD.o" "../HAL/LCD_Driver/LCD.c"
+In file included from ../HAL/LCD_Driver/LCD.c:12:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../HAL/LCD_Driver/LCD.c
+ 
+Building file: ../APP/MC2.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\APP" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\HAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\SPI_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC2\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"APP/MC2.d" -MT"APP/MC2.o" -c -o "APP/MC2.o" "../APP/MC2.c"
+In file included from ../APP/MC2.c:4:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+../APP/MC2.c: In function 'main':
+../APP/MC2.c:37: warning: passing argument 1 of 'UART_receiveString' discards qualifiers from pointer target type
+../APP/MC2.c:38: warning: passing argument 1 of 'LCD_displayString' discards qualifiers from pointer target type
+../APP/MC2.c:45: warning: pointer targets in passing argument 1 of 'LCD_displayString' differ in signedness
+Finished building: ../APP/MC2.c
+ 
+Building target: Chatting_MC2.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Chatting_MC2.map -mmcu=atmega32 -o "Chatting_MC2.elf"  ./MCAL/UART/UART.o  ./MCAL/SPI_Driver/SPI.o  ./MCAL/DIO_Driver/DIO.o  ./HAL/LCD_Driver/LCD.o  ./APP/MC2.o   
+Finished building target: Chatting_MC2.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S Chatting_MC2.elf  >"Chatting_MC2.lss"
+Finished building: Chatting_MC2.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex Chatting_MC2.elf  "Chatting_MC2.hex"
+Finished building: Chatting_MC2.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Chatting_MC2.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    9286 bytes (28.3% Full)
+(.text + .data + .bootloader)
+
+Data:         34 bytes (1.7% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+00:15:09 Build Finished. 0 errors, 5 warnings. (took 863ms)
+

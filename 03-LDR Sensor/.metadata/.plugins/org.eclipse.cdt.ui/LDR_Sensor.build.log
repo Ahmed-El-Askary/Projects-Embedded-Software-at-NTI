@@ -1,0 +1,20 @@
+09:49:06 **** Incremental Build of configuration Debug for project LDR_Sensor ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 LDR_Sensor.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:   10566 bytes (32.2% Full)
+(.text + .data + .bootloader)
+
+Data:         26 bytes (1.3% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+09:49:06 Build Finished. 0 errors, 0 warnings. (took 150ms)
+

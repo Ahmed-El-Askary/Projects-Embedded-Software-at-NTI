@@ -1,0 +1,45 @@
+13:19:27 **** Incremental Build of configuration Debug for project UART_MC ****
+make all 
+Building file: ../MCAL/UART/UART.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\UART" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\APP" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/UART/UART.d" -MT"MCAL/UART/UART.o" -c -o "MCAL/UART/UART.o" "../MCAL/UART/UART.c"
+Finished building: ../MCAL/UART/UART.c
+ 
+Building file: ../MCAL/DIO_Driver/DIO.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\UART" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\APP" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/DIO_Driver/DIO.d" -MT"MCAL/DIO_Driver/DIO.o" -c -o "MCAL/DIO_Driver/DIO.o" "../MCAL/DIO_Driver/DIO.c"
+Finished building: ../MCAL/DIO_Driver/DIO.c
+ 
+Building file: ../APP/Main_app.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\UART" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\APP" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\05-TASK UART\UART_MC\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"APP/Main_app.d" -MT"APP/Main_app.o" -c -o "APP/Main_app.o" "../APP/Main_app.c"
+Finished building: ../APP/Main_app.c
+ 
+Building target: UART_MC.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,UART_MC.map -mmcu=atmega32 -o "UART_MC.elf"  ./MCAL/UART/UART.o  ./MCAL/DIO_Driver/DIO.o  ./APP/Main_app.o   
+Finished building target: UART_MC.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S UART_MC.elf  >"UART_MC.lss"
+Finished building: UART_MC.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex UART_MC.elf  "UART_MC.hex"
+Finished building: UART_MC.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 UART_MC.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    2954 bytes (9.0% Full)
+(.text + .data + .bootloader)
+
+Data:         18 bytes (0.9% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 

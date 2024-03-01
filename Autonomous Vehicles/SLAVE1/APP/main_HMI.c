@@ -1,0 +1,147 @@
+/*
+ ================================================================================================
+ Name        : hmi_ecu_main.c
+ Author      : Ahmed El-Askary
+ Description : Responsible interaction with the user just take inputs through keypad and display messages on the LCD
+ Date        : 5/6/2023
+ ================================================================================================
+ */
+#include "uart.h"
+#include "lcd.h"
+#include "keypad.h"
+#include "timer1.h"
+#include <util/delay.h>
+#include <avr/interrupt.h>
+
+/*******************************************************************************
+ *                                Definitions                                  *
+ *******************************************************************************/
+#define READY_HMI_ECU                                    0
+#define ENTER_NEW_PASSWORD                               2
+#define RE_ENTER_NEW_PASSWORD                            3
+#define OPEN_DOOR                                        4
+#define CLOSE_DOOR                                       5
+#define BUZZER_ON                                        6
+#define MAIN_OPTIONS                                     7
+
+#define MATCHED_PASSWORD                                 0
+#define UNMATCHED_PASSWORD                               1
+
+
+/*******************************************************************************
+ *                         Functions Prototypes                                   *
+ *******************************************************************************/
+static volatile uint8 key_num;
+void HMI_ECU_recievePassword(void);
+void HMI_ECU_recievePassword(void)
+{
+	uint8 i;
+	for( i = 0 ;i < 5 ; i++ )
+	{
+		key_num = KEYPAD_getPressedKey();
+		if( key_num >=0 && key_num <=9)
+		{
+			UART_sendByte(key_num);
+			LCD_displayCharacter('*');
+		}
+		else
+			i--;
+		_delay_ms(500);
+	}
+	return;
+}
+
+
+static volatile uint8 g_tick;
+void timer1(void);
+void timer1(void)
+{
+	g_tick++;
+}
+/*******************************************************************************
+ *                        Main HMI ECU Functions                           *
+ *******************************************************************************/
+
+int main(void)
+{
+	LCD_init();
+	SREG  |= (1<<7);
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+
+	Timer1_ConfigType Timer1_Config ={ 0,1000 ,F_CPU_1024,CompareMode};
+	Timer1_setCallBack(timer1);
+
+	UART_sendByte(READY_HMI_ECU);
+	static uint8 check;
+	while(1)
+	{
+		check= UART_recieveByte();
+		switch(check)
+		{
+		case ENTER_NEW_PASSWORD:
+			while(UART_recieveByte() != READY_HMI_ECU);
+			LCD_clearScreen();
+			LCD_displayString("plz enter pass:");
+			LCD_moveCursor(1,0);
+			HMI_ECU_recievePassword();
+			break;
+
+		case RE_ENTER_NEW_PASSWORD:
+			while(UART_recieveByte() != READY_HMI_ECU);
+			LCD_clearScreen();
+			LCD_displayString("plz re-enter the");
+			LCD_moveCursor(1,0);
+			LCD_displayString("same pass: ");
+			HMI_ECU_recievePassword();
+			break;
+
+		case MAIN_OPTIONS:
+			LCD_clearScreen();
+			LCD_displayString("Matched Pass");
+			_delay_ms(1000);
+
+			LCD_clearScreen();
+			LCD_displayString("+ : Open Door");
+			LCD_displayStringRowColumn(1,0,"- : Change Pass");
+
+			while(UART_recieveByte() != READY_HMI_ECU);
+			UART_sendByte( KEYPAD_getPressedKey() );
+			break;
+
+		case OPEN_DOOR:
+			LCD_clearScreen();
+			LCD_displayString("Door is Unlocking");
+			Timer1_init(&Timer1_Config);
+			while(g_tick < 15);
+
+			Timer1_deInit();
+			g_tick =0;
+			LCD_clearScreen();
+			break;
+
+		case CLOSE_DOOR:
+			LCD_clearScreen();
+			LCD_displayString("Door is locking");
+			Timer1_init(&Timer1_Config);
+			while(g_tick < 15);
+
+			Timer1_deInit();
+			g_tick =0;
+			LCD_clearScreen();
+			break;
+
+		case BUZZER_ON:
+			LCD_clearScreen();
+			LCD_displayString("Pass not matched");
+			Timer1_init(&Timer1_Config);
+			while(g_tick < 60);
+
+			Timer1_deInit();
+			g_tick =0;
+			LCD_clearScreen();
+			break;
+		}
+	}
+}

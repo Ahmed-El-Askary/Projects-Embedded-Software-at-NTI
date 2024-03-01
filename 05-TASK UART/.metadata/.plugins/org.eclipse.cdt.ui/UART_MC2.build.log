@@ -1,0 +1,38 @@
+21:40:18 **** Incremental Build of configuration Debug for project UART_MC2 ****
+make all 
+Building file: ../APP/Main_app.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2" -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2\APP" -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2\HAL" -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\TASK UART\UART_MC2\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"APP/Main_app.d" -MT"APP/Main_app.o" -c -o "APP/Main_app.o" "../APP/Main_app.c"
+Finished building: ../APP/Main_app.c
+ 
+Building target: UART_MC2.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,UART_MC2.map -mmcu=atmega32 -o "UART_MC2.elf"  ./MCAL/UART/UART.o  ./MCAL/DIO_Driver/DIO.o  ./APP/Main_app.o   
+Finished building target: UART_MC2.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S UART_MC2.elf  >"UART_MC2.lss"
+Finished building: UART_MC2.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex UART_MC2.elf  "UART_MC2.hex"
+Finished building: UART_MC2.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 UART_MC2.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    2560 bytes (7.8% Full)
+(.text + .data + .bootloader)
+
+Data:          6 bytes (0.3% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+21:40:19 Build Finished. 0 errors, 0 warnings. (took 451ms)
+

@@ -1,0 +1,70 @@
+#include "DIO.h"
+#include "EXT_Interrupt.h"
+#include "dc_motor.h"
+
+
+ISR(INT0_vect)
+{
+	if (PIND & (1 << 2))
+	{
+		motorState = CLOCKWISE;
+	}
+	else
+	{
+		motorState = ANTICLOCKWISE;
+	}
+}
+int main(void)
+{
+
+	DIO_setupPinDirection(PORTB_ID, PIN0, PIN_OUTPUT);
+	DIO_setupPinDirection(PORTB_ID, PIN0, PIN_OUTPUT);
+
+
+	DIO_setupPinDirection(PORTC_ID, PIN0, PIN_OUTPUT);
+	DIO_setupPinDirection(PORTC_ID, PIN1, PIN_OUTPUT);
+	DIO_setupPinDirection(PORTC_ID, PIN2, PIN_OUTPUT);
+
+	EXI_TriggerEdge(INT0, FALLING);
+	EXI_Enable(INT0);
+
+	GIE_Enable();
+
+	while (1) {
+		switch (DcMotor_State) {
+		case STOPPED:
+			// Set both motor control pins low to stop the motor
+			PORTB &= ~((1 << 0) | (1 << 1));
+
+			// Turn off other LEDs
+			PORTC &= ~((1 << 0) | (1 << 1 ));
+
+			// Turn on LED for motor off
+			PORTC |= (1 << 2);
+			break;
+		case CLOCKWISE:
+			// Set one motor control pin high and the other low for clockwise rotation
+			PORTB = (PORTB & ~(1 << 1 )) | (1 << 0);
+
+			// Turn off other LEDs
+			PORTC &= ~((1 << 1) | (1 << 0));
+
+			// Turn on LED for motor clockwise
+			PORTC |= (1 << 0);
+			break;
+		case ANTICLOCKWISE:
+			// Set one motor control pin high and the other low for anticlockwise rotation
+			PORTB = (PORTB & ~(1 << 0)) | (1 << 1);
+
+			// Turn off other LEDs
+			PORTC &= ~((1 << 0) | (1 << 2));
+
+			// Turn on LED for motor anticlockwise
+			PORTC |= (1 << 1);
+			break;
+		}
+	}
+}
+
+// External interrupt INT0 service routine
+

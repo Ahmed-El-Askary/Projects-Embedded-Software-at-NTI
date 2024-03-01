@@ -1,0 +1,65 @@
+
+#include "DIO.h"
+#include "SEVENSEGMENT.h"
+#include <util/delay.h>
+
+
+u8 SEG_COM_ARR[] = {COM1, COM2, COM3, COM4};
+u8 SEG_PIN_ARR[] = { DEC1, DEC2, DEC3, DEC4};
+u8 segment_arr[10] = {0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f};
+void SegmentInit(void)
+{
+	for (u8 i = 0; i < 4; i++)
+	{
+		DIO_setupPinDirection(PORTB_ID , (SEG_PIN_ARR[i]), PIN_INPUT );
+		DIO_setupPinDirection(PORTB_ID , (SEG_COM_ARR[i]), LOGIC_HIGH );
+	}
+}
+
+// FROM 0 TO 9
+void SegmentDisplayOne(seg_select_t select,u8 data)
+{
+
+	DIO_setupPinDirection(PORTA_ID , (SEG_COM_ARR[select]), LOGIC_HIGH );
+	DIO_setupPinDirection(PORTB_ID , (SEG_COM_ARR[select]), LOGIC_HIGH );
+
+
+
+
+	SEGPORT1 = ((0xe8 & SEGPORT1) | (data & 0x07) | ((data & 8) << 1));
+
+	for(u8 i = 0; i < 4; i++)
+	{
+		if(i == select)
+		{
+
+		}
+		else
+		{
+			DIO_setupPinDirection(PORTA_ID , (SEG_COM_ARR[i]), LOGIC_HIGH );
+			DIO_setupPinDirection(PORTB_ID , (SEG_COM_ARR[i]), LOGIC_HIGH );
+		}
+	}
+}
+
+// FROM 0000 TO 9999
+void SegmentDisplay(u16 data)
+{
+	u8 Seg_Arr[] = {((data)%10),((data/10)%10),((data/100)%10),(data/1000)};
+
+	for(u8 i = 0; i < 4; i++)
+	{
+		DIO_setupPinDirection(PORTA_ID , (SEG_COM_ARR[i]), PIN_INPUT );
+		DIO_setupPinDirection(PORTB_ID , (SEG_COM_ARR[i]), PIN_INPUT );
+
+		SEGPORT1 = ((0xe8 & SEGPORT1) | ( (Seg_Arr[i]) & 0x07) | (( Seg_Arr[i] & (1<<3)) << 1));
+		/*for(u8 i = 0; i < 4; i++)
+		{
+			SEGPORT = data
+		}*/
+
+		_delay_ms(1);	
+		DIO_setupPinDirection(PORTA_ID , (SEG_COM_ARR[i]), LOGIC_HIGH );
+		DIO_setupPinDirection(PORTB_ID , (SEG_COM_ARR[i]), LOGIC_HIGH );
+	}
+}

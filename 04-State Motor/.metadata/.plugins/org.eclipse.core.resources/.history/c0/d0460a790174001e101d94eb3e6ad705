@@ -1,0 +1,79 @@
+#include "DIO.h"
+#include "EXT_Interrupt.h"
+#include "dc_motor.h"
+
+volatile DcMotor_State motorState = STOP;
+
+ISR(INT0_vect)
+{
+	if (BIT_IS_SET(PIND , 2))
+	{
+		DcMotor_Rotate(CW);
+	}
+	else
+	{
+		DcMotor_Rotate(ACW);
+	}
+}
+int main(void)
+{
+
+	DIO_setupPinDirection(PORTB_ID, PIN0, PIN_OUTPUT);
+	DIO_setupPinDirection(PORTB_ID, PIN0, PIN_OUTPUT);
+
+
+	DIO_setupPinDirection(PORTC_ID, PIN0, PIN_OUTPUT);
+	DIO_setupPinDirection(PORTC_ID, PIN1, PIN_OUTPUT);
+	DIO_setupPinDirection(PORTC_ID, PIN2, PIN_OUTPUT);
+
+	EXI_TriggerEdge(INT0, FALLING);
+	EXI_Enable(INT0);
+
+	GIE_Enable();
+
+	while (1) {
+		switch (motorState)
+		{
+		case STOP:
+			//PORTB &= ~((1 << 0) | (1 << 1));
+			DIO_writePin(MOTOR_PORT_ID,MOTOR_PIN0_ID, LOGIC_LOW);
+			DIO_writePin(MOTOR_PORT_ID,MOTOR_PIN1_ID, LOGIC_LOW);
+
+			//PORTC &= ~((1 << 0) | (1 << 1 ));
+			CLEAR_BIT(PORTC , PIN0);
+			CLEAR_BIT(PORTC , PIN1);
+
+			//PORTC |= (1 << 2);
+			SET_BIT(PORTC , PIN2);
+			break;
+
+		case CW:
+			//PORTB = (PORTB & ~(1 << 1 )) | (1 << 0);
+			DIO_writePin(MOTOR_PORT_ID,MOTOR_PIN0_ID, LOGIC_HIGH);
+			DIO_writePin(MOTOR_PORT_ID,MOTOR_PIN1_ID, LOGIC_LOW);
+
+			//PORTC &= ~((1 << 0) | (1 << 2));
+			CLEAR_BIT(PORTC , PIN0);
+			CLEAR_BIT(PORTC , PIN2);
+
+			//PORTC |= (1 << 1);
+			SET_BIT(PORTC , PIN1);
+
+			break;
+		case ACW:
+
+			//PORTB = (PORTB & ~(1 << 0)) | (1 << 1);
+			DIO_writePin(MOTOR_PORT_ID,MOTOR_PIN0_ID, LOGIC_LOW);
+			DIO_writePin(MOTOR_PORT_ID,MOTOR_PIN1_ID, LOGIC_HIGH);
+
+			//PORTC &= ~((1 << 1) | (1 << 2));
+			CLEAR_BIT(PORTC , PIN1);
+			CLEAR_BIT(PORTC , PIN2);
+
+			//PORTC |= (1 << 0);
+			SET_BIT(PORTC , PIN0);
+
+			break;
+		}
+	}
+}

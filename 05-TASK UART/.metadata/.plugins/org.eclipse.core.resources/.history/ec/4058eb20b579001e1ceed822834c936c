@@ -1,0 +1,37 @@
+/*
+ ================================================================================================
+ Name        : Main_app.c
+ Author      : Ahmed El-Askary.
+ Description :
+ Date        : 24/10/2023.
+ ================================================================================================
+ */
+#include "UART.h"
+#include "DIO.h"
+#include <string.h>
+
+int main(void)
+{
+	u8 Str[20];
+	DIO_setupPinDirection(PORTA_ID, PIN0, PIN_OUTPUT);
+	CLEAR_BIT(PORTA , PIN0);
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+
+
+	while(1)
+	{
+		UART_receiveString(Str);
+//		UART_sendString(Str);
+
+		if (strcmp(Str, "open") == 0)
+		{
+			SET_BIT(PORTA, PIN0); // Turn on the LED when "open" is received
+		}
+		else
+		{
+			CLEAR_BIT(PORTA, PIN0); // Turn off the LED for other strings
+		}
+	}
+}

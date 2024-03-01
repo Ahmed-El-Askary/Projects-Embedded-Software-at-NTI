@@ -1,0 +1,87 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+// Motor control pins
+#define MOTOR_PIN_1 PORTB0
+#define MOTOR_PIN_2 PORTB1
+
+// Push button pin
+#define BUTTON_PIN PIND2
+
+// LED pins
+#define LED_CLOCKWISE_PIN PORTC0
+#define LED_ANTICLOCKWISE_PIN PORTC1
+#define LED_OFF_PIN PORTC2
+
+// Motor control states
+typedef enum {
+    STOPPED,
+    CLOCKWISE,
+    ANTICLOCKWISE
+} MotorState;
+
+volatile MotorState motorState = STOPPED;
+
+int main(void) {
+    // Configure motor control pins as output
+    DDRB |= (1 << MOTOR_PIN_1) | (1 << MOTOR_PIN_2);
+
+    // Configure LED pins as output
+    DDRC |= (1 << LED_CLOCKWISE_PIN) | (1 << LED_ANTICLOCKWISE_PIN) | (1 << LED_OFF_PIN);
+
+    // Enable the internal pull-up resistor for the button pin
+    PORTD |= (1 << BUTTON_PIN);
+
+    // Configure external interrupt INT0
+    MCUCR |= (1 << ISC01);  // Trigger on falling edge
+    MCUCR |= (1 << INT0);   // Enable external interrupt INT0
+
+    // Enable global interrupts
+    sei();
+
+    while (1) {
+        switch (motorState) {
+            case STOPPED:
+                // Set both motor control pins low to stop the motor
+                PORTB &= ~((1 << MOTOR_PIN_1) | (1 << MOTOR_PIN_2));
+
+                // Turn off other LEDs
+                PORTC &= ~((1 << LED_CLOCKWISE_PIN) | (1 << LED_ANTICLOCKWISE_PIN));
+
+                // Turn on LED for motor off
+                PORTC |= (1 << LED_OFF_PIN);
+                break;
+            case CLOCKWISE:
+                // Set one motor control pin high and the other low for clockwise rotation
+                PORTB = (PORTB & ~(1 << MOTOR_PIN_2)) | (1 << MOTOR_PIN_1);
+
+                // Turn off other LEDs
+                PORTC &= ~((1 << LED_ANTICLOCKWISE_PIN) | (1 << LED_OFF_PIN));
+
+                // Turn on LED for motor clockwise
+                PORTC |= (1 << LED_CLOCKWISE_PIN);
+                break;
+            case ANTICLOCKWISE:
+                // Set one motor control pin high and the other low for anticlockwise rotation
+                PORTB = (PORTB & ~(1 << MOTOR_PIN_1)) | (1 << MOTOR_PIN_2);
+
+                // Turn off other LEDs
+                PORTC &= ~((1 << LED_CLOCKWISE_PIN) | (1 << LED_OFF_PIN));
+
+                // Turn on LED for motor anticlockwise
+                PORTC |= (1 << LED_ANTICLOCKWISE_PIN);
+                break;
+        }
+    }
+}
+
+// External interrupt INT0 service routine
+ISR(INT0_vect) {
+    if (PIND & (1 << BUTTON_PIN)) {
+        // Button released
+        motorState = CLOCKWISE;
+    } else {
+        // Button pressed
+        motorState = ANTICLOCKWISE;
+    }
+}

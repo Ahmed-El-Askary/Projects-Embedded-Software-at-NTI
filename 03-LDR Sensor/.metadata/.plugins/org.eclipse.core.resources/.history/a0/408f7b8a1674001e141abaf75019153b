@@ -1,0 +1,31 @@
+/*
+ * ADC.c
+ *
+ *  Created on: Oct 24, 2023
+ *      Author: DELL
+ */
+#include "ADC.h"
+#include "std_types.h"
+#include "ADC_config.h"
+#include "common_macros.h"
+
+
+
+void ADC_init(void)
+{
+	ADMUX = (1<<REFS0);
+	ADCSRA = (1<<ADEN) | (1<<ADPS2) | (1<<ADPS1) | (1<<ADPS0);
+}
+
+u16 ADC_readChannel(u8 channel_num)
+{
+	channel_num &= 0x07;
+	ADMUX &= 0xE0;
+	ADMUX = ADMUX | channel_num;
+	SET_BIT(ADCSRA,ADSC);
+	while(BIT_IS_CLEAR(ADCSRA,ADIF));
+	SET_BIT(ADCSRA,ADIF);
+	return ADC;
+}
+
+

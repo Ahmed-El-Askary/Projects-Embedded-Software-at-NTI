@@ -1,0 +1,21 @@
+23:55:41 **** Incremental Build of configuration Debug for project Chatting_MC1 ****
+make all 
+Building file: ../MCAL/SPI_Driver/SPI.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\APP" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\HAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\MCAL\EXT_Interrupt_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\MCAL\SPI_Driver" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\MCAL\UART" -I"G:\Yarab\NTI G10\Projects NTI\06-Chatting\Chatting_MC1\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/SPI_Driver/SPI.d" -MT"MCAL/SPI_Driver/SPI.o" -c -o "MCAL/SPI_Driver/SPI.o" "../MCAL/SPI_Driver/SPI.c"
+../MCAL/SPI_Driver/SPI.c: In function 'SPI_initMaster':
+../MCAL/SPI_Driver/SPI.c:16: warning: implicit declaration of function 'DIO_setupPinDirection'
+../MCAL/SPI_Driver/SPI.c:16: error: 'PIN_INPUT' undeclared (first use in this function)
+../MCAL/SPI_Driver/SPI.c:16: error: (Each undeclared identifier is reported only once
+../MCAL/SPI_Driver/SPI.c:16: error: for each function it appears in.)
+../MCAL/SPI_Driver/SPI.c:17: error: 'PIN_OUTPUT' undeclared (first use in this function)
+../MCAL/SPI_Driver/SPI.c: In function 'SPI_initSlave':
+../MCAL/SPI_Driver/SPI.c:31: error: 'PIN_INPUT' undeclared (first use in this function)
+../MCAL/SPI_Driver/SPI.c:33: error: 'PIN_OUTPUT' undeclared (first use in this function)
+../MCAL/SPI_Driver/SPI.c: In function 'SPI_sendRecieveString':
+../MCAL/SPI_Driver/SPI.c:78: warning: implicit declaration of function 'SPI_sendRecieveByte'
+make: *** [MCAL/SPI_Driver/SPI.o] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+23:55:42 Build Failed. 5 errors, 2 warnings. (took 197ms)
+

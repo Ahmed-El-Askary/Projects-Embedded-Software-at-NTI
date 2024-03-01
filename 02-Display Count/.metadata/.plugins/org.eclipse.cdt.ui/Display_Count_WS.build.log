@@ -1,0 +1,20 @@
+10:37:58 **** Incremental Build of configuration Debug for project Display_Count_WS ****
+make all 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 Display_Count_WS.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    6804 bytes (20.8% Full)
+(.text + .data + .bootloader)
+
+Data:         17 bytes (0.8% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 
+
+10:37:58 Build Finished. 0 errors, 0 warnings. (took 147ms)
+

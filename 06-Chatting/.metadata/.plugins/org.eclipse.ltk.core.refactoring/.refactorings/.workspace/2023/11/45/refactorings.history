@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;Chatting_MC1/MCAL/SPI_Driver&apos;" deleteContents="false" description="Delete resource &apos;Chatting_MC1/MCAL/SPI_Driver&apos;" element1="/Chatting_MC1/MCAL/SPI_Driver" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1699213426838"/>
+</session>

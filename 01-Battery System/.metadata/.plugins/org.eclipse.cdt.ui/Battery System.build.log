@@ -1,0 +1,16 @@
+19:44:13 **** Incremental Build of configuration Debug for project Battery System ****
+make all 
+Building file: ../APP/Main_app.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\APP" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\HAL" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\MCAL\ADC_Driver" -I"G:\Yarab\NTI G10\Projects NTI\Battery System\Battery System\MCAL\DIO_Driver" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"APP/Main_app.d" -MT"APP/Main_app.o" -c -o "APP/Main_app.o" "../APP/Main_app.c"
+Finished building: ../APP/Main_app.c
+ 
+Building target: Battery System.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,Battery System.map -mmcu=atmega32 -o "Battery System.elf"  ./MCAL/DIO_Driver/DIO.o  ./MCAL/ADC_Driver/ADC.o  ./HAL/LCD_Driver/LCD.o  ./APP/Main_app.o   
+avr-gcc.exe: System.map: No such file or directory
+make: *** [Battery System.elf] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+19:44:14 Build Failed. 1 errors, 0 warnings. (took 249ms)
+

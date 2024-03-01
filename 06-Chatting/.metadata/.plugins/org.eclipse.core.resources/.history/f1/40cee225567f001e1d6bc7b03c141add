@@ -1,0 +1,122 @@
+#include "uart.h"
+#include "lcd.h"
+#include "SPI.h"
+#include <util/delay.h>
+
+
+
+
+u8 virtual_terminal_input[20];
+volatile u8 send_flag ;
+
+
+
+
+void uart_function(void)
+{
+	static u8 counter;
+	virtual_terminal_input[counter] = UART_ReceiveNoBlock();
+	if ( virtual_terminal_input[counter] == 0x0D )
+	{
+		virtual_terminal_input[counter] = 0 ;
+		send_flag = 1 ;
+		counter = 0 ;
+	}
+	else if ( virtual_terminal_input[counter] == 127 || virtual_terminal_input[counter] == '\b' )
+	{
+		virtual_terminal_input[counter] = 0 ;
+
+		virtual_terminal_input[counter-1] = 0 ;
+		counter-- ;
+	}
+	else if( virtual_terminal_input[counter] != 0x0D )
+	{
+		counter++;
+	}
+
+}
+
+
+
+
+int main(void)
+{
+	DIO_Init();
+	//ADC_Init(VREF_AVCC,ADC_SCALER_64);
+	SPI_Init();
+	UART_Init();
+	LCD_Init();
+	//MOTOR_Init();
+	SPI_SetCallBack(SPI_function);
+	UART_RX_SetCallBack(uart_function);
+	UART_RX_InterruptEnable();
+	//SPI_InterruptEnable();
+	//ServMotor_Init();
+	//Timer1_Init(TIMER1_FASTPWM_ICR_TOP_MODE,TIMER1_SCALER_8);
+	//Timer1_SetInterruptTime_ms()
+	//TIMER0_Init(TIMER0_FASTPWM_MODE,TIMER0_SCALER_8);
+	//TIMER0_OC0Mode(OC0_NON_INVERTING);
+	//Timer1_OCRA1Mode(OCRA_NON_INVERTING);
+	//Timer1_OCRB1Mode(OCRB_NON_INVERTING);
+	DIO_WritePin(PINB1,HIGH);
+	sei();
+	u16 adc_result ;
+	u8 result_flag = 0 ;
+	u8 n;
+
+	u8 string[20] = {0};
+	u8 counter1 = 0 ;
+	u8 counter2 = 0 ;
+	u8 flag = 1;
+	u8 garbage = 0 ;
+	while (1)
+	{
+
+		if ( SPI_ReceivePeriodic(string+counter1) )
+		{
+			if ( string[counter1] == 5 && send_flag && virtual_terminal_input[counter2] != 0 )
+			{
+				SPI_sendNoblock(virtual_terminal_input[counter2]) ;
+				counter2++ ;
+				DIO_WritePin(PINB1,LOW);
+				DIO_WritePin(PINB1,HIGH);
+			}
+			else if ( string[counter1] != 0 )
+			{
+				counter1++ ;
+			}
+			else if ( string[counter1] == 0 )
+			{
+				counter1 = 0 ;
+				LCD_Clear();
+				LCD_WriteString(string);
+			}
+
+
+		}
+
+		if ( send_flag )
+		{
+			garbage = SPI_Receive() ;
+			result_flag = 1 ;
+			garbage = SPI_SendReceive(virtual_terminal_input[0]);
+			DIO_WritePin(PINB1,LOW);
+			//_delay_ms(1);
+			DIO_WritePin(PINB1,HIGH);
+
+			send_flag = 0 ;
+			for (u8 i=1;flag;i++)
+			{
+				garbage = SPI_SendReceive(virtual_terminal_input[i]);
+				if ( virtual_terminal_input[i] == 0 )
+				{
+					flag = 0 ;
+				}
+
+			}
+
+		}
+
+
+	}
+}

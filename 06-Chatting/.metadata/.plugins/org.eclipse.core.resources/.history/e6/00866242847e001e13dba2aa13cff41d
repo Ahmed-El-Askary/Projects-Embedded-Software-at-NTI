@@ -1,0 +1,100 @@
+#include "UART.h"
+#include "LCD.h"
+#include "DIO.h"
+#include "EXT_Interrupt.h"
+#include <util/delay.h>
+
+
+#define MC2_READY 0x10
+
+volatile u8  arr[20] ;
+volatile u8  mos ;
+void function (void)
+{
+	static u8 count = 0 ;
+	if (mos == 0)
+	{
+		arr[count] = SPI_sendReceiveByte(arr[count]);
+
+		if (arr[count] == '#')
+		{
+			count = 0 ;
+			mos = 1 ;
+		}
+		else
+		{
+			count++ ;
+		}
+	}
+}
+
+
+int main(void)
+{
+	GIE_Enable();
+	u8 Str[20];
+
+	DIO_setupPinDirection(PORTD_ID, PIN3, PIN_INPUT);
+
+
+	DIO_setupPinDirection(PORTD_ID, PIN2, PIN_INPUT);
+	DIO_setupPinDirection(PORTB_ID, PIN0, PIN_OUTPUT);
+	DIO_writePin(PORTB_ID, PIN0, LOGIC_HIGH);
+
+	SPI_initMaster();
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+	LCD_init();
+
+	EXI_TriggerEdge(EX_INT1, RISING);
+	EXI_SetCallBack(EX_INT1, function);
+	EXI_Enable(EX_INT1);
+
+
+
+	while(1)
+	{
+		UART_receiveString(Str);
+		DIO_writePin(PORTB_ID, PIN0, LOGIC_LOW);
+		SPI_sendString(Str);
+		DIO_writePin(PORTB_ID, PIN0, LOGIC_HIGH);
+
+		if (mos == 1 )
+		{
+			LCD_displayString(arr);
+			mos = 0 ;
+			_delay_ms(1000);
+			LCD_clearScreen();
+		}
+	}
+}
+
+
+//		if (DIO_readPin(PORTD_ID, PIN2) == 0)
+		//		{
+		//			DIO_writePin(PORTB_ID, PIN0, LOGIC_LOW);
+		//			SPI_receiveString(Str);
+		//			DIO_writePin(PORTB_ID, PIN0, LOGIC_HIGH);
+		//			LCD_displayString(Str);
+		//			_delay_ms(1000);
+		//			LCD_clearScreen();
+		//
+		//		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

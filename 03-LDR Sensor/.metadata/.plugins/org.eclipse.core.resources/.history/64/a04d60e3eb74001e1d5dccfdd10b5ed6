@@ -1,0 +1,16 @@
+///*
+// * LDR.h
+// *
+// *  Created on: Oct 26, 2023
+// *      Author: DELL
+// */
+//
+//#ifndef HAL_LDR_H_
+//#define HAL_LDR_H_
+//
+//#define ADC_CHANNEL ADC_CHANNEL_A0
+//
+//void LDR_init(void);
+//u16 LDR_CallValue(void);
+//
+//#endif /* HAL_LDR_H_ */

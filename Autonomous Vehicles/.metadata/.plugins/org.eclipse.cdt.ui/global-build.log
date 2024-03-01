@@ -1,0 +1,72 @@
+00:25:32 **** Clean-only build of configuration Debug for project HMI_ECU ****
+make clean 
+rm -rf  HMI_ECU.hex  ./MCAL/UART/uart.o  ./MCAL/TIMER_Driver/timer1.o  ./MCAL/DIO_Driver/gpio.o  ./HAL/LCD_Driver/lcd.o  ./HAL/KEYPAD_Driver/keypad.o  ./APP/main_HMI.o  sizedummy  HMI_ECU.lss  ./MCAL/UART/uart.d  ./MCAL/TIMER_Driver/timer1.d  ./MCAL/DIO_Driver/gpio.d  ./HAL/LCD_Driver/lcd.d  ./HAL/KEYPAD_Driver/keypad.d  ./APP/main_HMI.d  HMI_ECU.elf
+ 
+00:25:33 **** Incremental Build of configuration Debug for project HMI_ECU ****
+make all 
+Building file: ../MCAL/UART/uart.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\APP" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\KEYPAD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\TIMER_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/UART/uart.d" -MT"MCAL/UART/uart.o" -c -o "MCAL/UART/uart.o" "../MCAL/UART/uart.c"
+Finished building: ../MCAL/UART/uart.c
+ 
+Building file: ../MCAL/TIMER_Driver/timer1.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\APP" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\KEYPAD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\TIMER_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/TIMER_Driver/timer1.d" -MT"MCAL/TIMER_Driver/timer1.o" -c -o "MCAL/TIMER_Driver/timer1.o" "../MCAL/TIMER_Driver/timer1.c"
+../MCAL/TIMER_Driver/timer1.c: In function 'Timer1_setCallBack':
+../MCAL/TIMER_Driver/timer1.c:92: warning: function return types not compatible due to 'volatile'
+Finished building: ../MCAL/TIMER_Driver/timer1.c
+ 
+Building file: ../MCAL/DIO_Driver/gpio.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\APP" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\KEYPAD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\TIMER_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"MCAL/DIO_Driver/gpio.d" -MT"MCAL/DIO_Driver/gpio.o" -c -o "MCAL/DIO_Driver/gpio.o" "../MCAL/DIO_Driver/gpio.c"
+Finished building: ../MCAL/DIO_Driver/gpio.c
+ 
+Building file: ../HAL/LCD_Driver/lcd.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\APP" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\KEYPAD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\TIMER_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"HAL/LCD_Driver/lcd.d" -MT"HAL/LCD_Driver/lcd.o" -c -o "HAL/LCD_Driver/lcd.o" "../HAL/LCD_Driver/lcd.c"
+In file included from ../HAL/LCD_Driver/lcd.c:13:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../HAL/LCD_Driver/lcd.c
+ 
+Building file: ../HAL/KEYPAD_Driver/keypad.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\APP" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\KEYPAD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\TIMER_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"HAL/KEYPAD_Driver/keypad.d" -MT"HAL/KEYPAD_Driver/keypad.o" -c -o "HAL/KEYPAD_Driver/keypad.o" "../HAL/KEYPAD_Driver/keypad.c"
+In file included from ../HAL/KEYPAD_Driver/keypad.c:14:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../HAL/KEYPAD_Driver/keypad.c
+ 
+Building file: ../APP/main_HMI.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\APP" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\KEYPAD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\HAL\LCD_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\TIMER_Driver" -I"G:\Yarab\NTI G10\Projects NTI\07-CAR\HMI_ECU\MCAL\UART" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"APP/main_HMI.d" -MT"APP/main_HMI.o" -c -o "APP/main_HMI.o" "../APP/main_HMI.c"
+In file included from ../APP/main_HMI.c:13:
+c:/winavr-20100110/lib/gcc/../../avr/include/util/delay.h:90:3: warning: #warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+Finished building: ../APP/main_HMI.c
+ 
+Building target: HMI_ECU.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,HMI_ECU.map -mmcu=atmega32 -o "HMI_ECU.elf"  ./MCAL/UART/uart.o  ./MCAL/TIMER_Driver/timer1.o  ./MCAL/DIO_Driver/gpio.o  ./HAL/LCD_Driver/lcd.o  ./HAL/KEYPAD_Driver/keypad.o  ./APP/main_HMI.o   
+Finished building target: HMI_ECU.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S HMI_ECU.elf  >"HMI_ECU.lss"
+Finished building: HMI_ECU.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex HMI_ECU.elf  "HMI_ECU.hex"
+Finished building: HMI_ECU.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 HMI_ECU.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:   10602 bytes (32.4% Full)
+(.text + .data + .bootloader)
+
+Data:        163 bytes (8.0% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 

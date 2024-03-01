@@ -1,0 +1,43 @@
+#include "uart.h"
+#include "lcd.h"
+#include "SPI.h"
+#include <util/delay.h>
+
+
+#define MC2_READY 0x10
+
+int main(void)
+{
+	//DIO_setupPinDirection(PORTA_ID, PIN0, PIN_INPUT);
+
+u8 arr[20];
+	u8 Str[20];
+	SPI_initSlave();
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+	LCD_init();
+
+	LCD_moveCursor(0, 0);
+	while(1)
+	{
+
+		SPI_receiveString(Str);
+		LCD_displayString(Str);
+
+		_delay_ms(1000);
+		LCD_clearScreen();
+
+
+		UART_receiveString(arr);
+		DIO_writePin(PORTB_ID, PIN0, LOGIC_LOW);
+		SPI_sendString(arr);
+		DIO_writePin(PORTB_ID, PIN0, LOGIC_HIGH);
+
+
+	}
+}
+
+
+
+

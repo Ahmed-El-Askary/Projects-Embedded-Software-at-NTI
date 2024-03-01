@@ -1,0 +1,46 @@
+/*
+ ============================================================================
+ Module      : DIO
+ File Name   : DIO.c
+ Description : Source file for the AVR DIO driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+u8 volatile * const portx[]=	{   &PORTA , &PORTB , &PORTC , &PORTD,
+									&DDRA  , &DDRB  , &DDRC  , &DDRD,
+									&PINA  , &PINB  , &PINC  , &PIND};
+
+void DIO_vSetPinMode(dio_channel_t Channel_ID,dio_mode mode){
+	/*From only the name of the pin we can get the port and the pin number by these calculations
+	  from PA0 to PA7 port_idx = 0
+	  from PB0 to PB7 port_idx = 1
+	  from PC0 to PC7 port_idx = 2
+	  from PD0 to PD7 port_idx = 3
+	  as every port takes 8 pins
+	  then we get %8 of the pin number to skip every 8 pins as they represent 1 port
+	*/
+	u8 port_idx=Channel_ID/8;
+	u8 pin_idx=Channel_ID%8;
+
+	(mode == OUTPUT_H || mode == OUTPUT_L) ? SET_BIT( *portx[port_idx + DDRX_START_IDX ] , pin_idx ) : CLR_BIT( *portx[port_idx + DDRX_START_IDX ] ,pin_idx);
+
+	(mode == OUTPUT_H || mode == INPUT_PULLUP )   ? SET_BIT( *portx[port_idx] , pin_idx ) : CLR_BIT( *portx[port_idx] , pin_idx);
+}
+
+u8 DIO_u8GetPinValue(dio_channel_t Channel_ID){
+	return GET_BIT(*portx[Channel_ID/8 + PINX_START_IDX],Channel_ID%8);
+}
+
+void DIO_vSetPinValue(dio_channel_t Channel_ID,dio_mode mode){
+	u8 port_idx=Channel_ID/8;
+	u8 pin_idx=Channel_ID%8;
+	(mode == OUTPUT_H) ? SET_BIT( *portx[port_idx] , pin_idx ) : CLR_BIT( *portx[port_idx] ,pin_idx);
+}
+
+void DIO_vTogPin(dio_channel_t Channel_ID){
+	u8 port_idx=Channel_ID/8;
+	u8 pin_idx=Channel_ID%8;
+	TOG_BIT(*portx[port_idx] , pin_idx );
+}

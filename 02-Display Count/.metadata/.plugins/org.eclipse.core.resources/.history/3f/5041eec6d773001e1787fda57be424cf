@@ -1,0 +1,89 @@
+
+#include "DIO.h"
+#include "EXT_Interrupt.h"
+#include <util/delay.h>
+
+
+unsigned char count_flag = 0;
+unsigned char count_1 = 0;
+unsigned char count_2 = 0;
+
+void INT1_Init(void)
+{
+	// Configure INT1/PD3 as input pin
+	DIO_setupPinDirection(PORTD_ID, PIN3, PIN_INPUT);
+	// Trigger INT1 with the raising edge
+	EXI_TriggerEdge(EX_INT1,RISING);
+	// Enable external interrupt pin INT1
+	EXI_Enable(INT1);
+	GICR |= (1 << INT1);
+}
+
+void LED_Init(void)
+{
+	//  LED/PC4 as output pin
+	DIO_setupPinDirection(PORTC_ID, PIN4, PIN_OUTPUT);
+}
+#define  MCUCR      *((volatile u8*)  0x55)
+#define  MCUCSR     *((volatile u8*)  0x54)
+#define  GICR       *((volatile u8*)  0x5B)
+#define  GIFR       *((volatile u8*)  0x5A)
+#define  SREG       *((volatile u8*)  0x5F)
+
+
+
+void __vector_3(void)__attribute__((signal));
+void __vector_3(void)
+{
+	count_flag = 1;
+	TOGGLE_BIT(PORTC , PIN4);
+}
+
+void displayNumber(unsigned char number)
+{
+	PORTA = (PORTA & 0xFC) | 0x01;
+	PORTC = (PORTC & 0xF0) | (number % 10);
+	_delay_ms(2);
+
+	PORTA = (PORTA & 0xFC) | 0x02;
+	PORTC = (PORTC & 0xF0) | (number / 10);
+	_delay_ms(2);
+}
+
+int main(void)
+{
+	DDRA |= 0x03; // Set PA0 and PA1 as output
+	DDRC |= 0x1F; // Set PC0-PC4 as output
+
+	PORTA |= 0x03; // Set PA0 and PA1 high (turn off the display)
+	PORTC &= 0xF0; // Set PC0-PC3 low
+
+	SET_BIT(SREG , 7);
+	// Enable global interrupts
+
+	INT1_Init(); // Initialize INT1
+	LED_Init();  // Initialize LED
+
+	while (1)
+	{
+		if (count_flag == 1)
+		{
+			count_1++;
+			if (count_1 == 10)
+			{
+				count_1 = 0;
+				count_2++;
+				if (count_2 == 10)
+				{
+					count_2 = 0;
+				}
+			}
+			count_flag = 0;
+		}
+
+		displayNumber(count_2 * 10 + count_1);
+	}
+}
+
+
+

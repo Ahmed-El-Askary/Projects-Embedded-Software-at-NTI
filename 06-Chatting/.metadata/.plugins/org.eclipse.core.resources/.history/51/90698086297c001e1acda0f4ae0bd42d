@@ -1,0 +1,103 @@
+//#include "uart.h"
+//#include "lcd.h"
+//#include "SPI.h"
+//#include <util/delay.h>
+//
+//volatile u8 arr[20];
+//#define MC2_READY 0x10
+//
+//
+//u8 fun (u8 ah)
+//{
+//	 SPI_sendNOBLOCK(ah);
+//	DIO_writePin(PORTA_ID, PIN0, LOGIC_HIGH);
+//	_delay_ms(3);
+//	DIO_writePin(PORTA_ID, PIN0, LOGIC_LOW);
+//	return  SPI_reNOBLOCK() ;
+//}
+//
+//
+//
+//
+//
+//
+//
+//
+//int main(void)
+//{
+//	DIO_setupPinDirection(PORTA_ID, PIN0, PIN_OUTPUT);
+//
+//
+//	u8 Str[20];
+//
+//
+//	SPI_initSlave();
+//
+//	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+//	UART_init( &UART_Config );
+//	LCD_init();
+//	u8 var = 0 ;
+//	LCD_moveCursor(0, 0);
+//	while(1)
+//	{
+//		UART_receiveString(arr);
+//		LCD_displayString(arr);
+//		for (int i = 0 ; arr[i] ; i++)
+//		{
+//			var = fun(arr[i]);
+//		}
+//
+//		//		SPI_receiveString(Str);
+//		//		LCD_displayString(Str);
+//		//
+//		//		_delay_ms(1000);
+//		//		LCD_clearScreen();
+//	}
+//}
+//
+//
+//
+//
+
+
+#include "uart.h"
+#include "lcd.h"
+#include "SPI.h"
+#include <util/delay.h>
+
+#define SS_PIN PORTB_ID   // Example SS pin connected to Port B, Pin 4
+
+volatile u8 arr[20];
+
+u8 sendDataOverSPI(u8 data) {
+    DIO_writePin(PORTA_ID, PIN0, PIN_INPUT);   // Assert the SS pin
+    _delay_ms(3);
+    u8 receivedData = SPI_sendReceiveByte(data);
+    DIO_writePin(PORTA_ID, PIN0, PIN_OUTPUT);   // Assert the SS pin
+    return receivedData;
+}
+
+int main(void) {
+    DIO_setupPinDirection(SS_PIN, PIN_OUTPUT);  // Set SS pin as output
+
+    u8 receivedData[20];
+
+    SPI_initSlave();
+
+    UART_ConfigType UART_Config = {BIT_8, DISABLED_PARITY, STOP_ONE_BIT, 9600};
+    UART_init(&UART_Config);
+    LCD_init();
+
+    LCD_moveCursor(0, 0);
+
+    while (1) {
+        u8 processedData[20];
+        for (int i = 0; receivedData[i]; i++) {
+            receivedData[i] = sendDataOverSPI(receivedData[i]);
+        }
+        UART_sendString(processedData);
+
+        _delay_ms(1000);
+        LCD_clearScreen();
+    }
+}

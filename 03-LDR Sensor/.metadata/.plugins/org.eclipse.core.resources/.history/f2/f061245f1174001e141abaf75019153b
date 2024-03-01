@@ -1,0 +1,74 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
+// Function to initialize ADC
+void initADC()
+{
+    // Set reference voltage to AVCC and left-adjust the result
+    ADMUX = (1 << REFS0) | (1 << ADLAR);
+
+    // Enable ADC and set ADC prescaler to 128
+    ADCSRA = (1 << ADEN) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+}
+
+// Function to read ADC value
+uint16_t readADC(uint8_t channel)
+{
+    // Select ADC channel
+    ADMUX = (ADMUX & 0xF8) | (channel & 0x07);
+
+    // Start ADC conversion
+    ADCSRA |= (1 << ADSC);
+
+    // Wait for conversion to complete
+    while (ADCSRA & (1 << ADSC))
+        ;
+
+    // Return ADC result
+    return ADC;
+}
+
+// Function to initialize LEDs
+void initLEDs()
+{
+    // Set PB0 - PB7 as output for LEDs
+    DDRB = 0xFF;
+}
+
+// Function to display light level using LEDs
+void displayLightLevel(uint16_t adcValue)
+{
+    // Calculate the LED index based on ADC value
+    uint8_t ledIndex = (adcValue * 8) / 1023;
+
+    // Turn on the LEDs up to the calculated index
+    PORTB = (1 << ledIndex) - 1;
+}
+
+int main()
+{
+    // Initialize ADC
+    initADC();
+
+    // Initialize LEDs
+    initLEDs();
+
+    // Enable global interrupts
+    sei();
+
+    // Main loop
+    while (1)
+    {
+        // Read ADC value from LDR sensor connected to ADC channel 0
+        uint16_t adcValue = readADC(0);
+
+        // Display light level using LEDs
+        displayLightLevel(adcValue);
+
+        // Delay for stability
+        _delay_ms(100);
+    }
+
+    return 0;
+}

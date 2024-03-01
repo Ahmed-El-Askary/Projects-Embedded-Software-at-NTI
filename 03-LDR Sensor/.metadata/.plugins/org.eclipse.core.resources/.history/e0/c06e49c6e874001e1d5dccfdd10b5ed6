@@ -1,0 +1,44 @@
+#include "ADC.h"
+#include "LCD.h"
+#include "DIO.h"
+
+int main(void)
+{
+	u16 ADC_value;
+	u16 light ;
+	LCD_init();
+
+	DDRD = 0xFF ;
+	PORTD = 0x00 ;
+
+	ADC_ConfigType ConfigType;
+	ConfigType.ref_volt = AREF;
+	ConfigType.prescaler = F_CPU_8;
+	ADC_ConfigType *Config_Ptr = &ConfigType;
+	ADC_init(Config_Ptr);
+
+	LCD_displayString("ADC Value = ");
+	while(1)
+	{
+		/* Read ADC channel 0 where the potentiometer is connected */
+		ADC_value = ADC_readChannel(0);
+		light = (u16) (((u32) ADC_value*10000*2)/(1023));
+
+		/* Display the ADC digital value every time at same position */
+		LCD_moveCursor(1,5);
+		LCD_intgerToString(light);
+		LCD_displayString("    ");
+
+//
+//		if(light >= 10000)
+//		{
+//			LCD_intgerToString(light);
+//		}
+//		else
+//		{
+//			LCD_intgerToString(light);
+//			/* In case the digital value is three or two or one digits print space in the next digit place */
+//			LCD_displayCharacter(' ');
+//		}
+	}
+}

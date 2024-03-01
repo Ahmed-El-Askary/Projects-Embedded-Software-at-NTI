@@ -1,0 +1,43 @@
+/*
+ ============================================================================
+ Module      : DIO
+ File Name   : DIO_private.h
+ Description : Header file private for the AVR DIO driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+#ifndef DIO_PRIVATE_H_
+#define DIO_PRIVATE_H_
+
+
+#define PORTA_ID  *((volatile u8*) 0x3B)
+#define DDRA_ID   *((volatile u8*) 0x3A)
+#define PINA_ID   *((volatile u8*) 0x39)
+
+#define PORTB_ID  *((volatile u8*) 0x38)
+#define DDRB_ID   *((volatile u8*) 0x37)
+#define PINB_ID   *((volatile u8*) 0x36)
+
+#define PORTC_ID  *((volatile u8*) 0x35)
+#define DDRC_ID   *((volatile u8*) 0x34)
+#define PINC_ID   *((volatile u8*) 0x33)
+
+#define PORTD_ID  *((volatile u8*) 0x32)
+#define DDRD_ID   *((volatile u8*) 0x31)
+#define PIND_ID   *((volatile u8*) 0x30)
+
+
+
+#define PIN0_ID (u8)(0x00)
+#define PIN1_ID (u8)(0x01)
+#define PIN2_ID (u8)(0x02)
+#define PIN3_ID (u8)(0x03)
+#define PIN4_ID (u8)(0x04)
+#define PIN5_ID (u8)(0x05)
+#define PIN6_ID (u8)(0x06)
+#define PIN7_ID (u8)(0x07)
+
+
+#endif /* DIO_PRIVATE_H_ */

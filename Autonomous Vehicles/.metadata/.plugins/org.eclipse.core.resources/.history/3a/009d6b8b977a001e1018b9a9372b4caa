@@ -1,0 +1,15 @@
+
+
+#include <util/delay.h>
+#include "lm35_sensor.h"
+#include "ADC.h"
+
+
+u8 LM35_getTemperature(void)
+{
+	u8 temp_value = 0;
+	ADC_readChannel(SENSOR_CHANNEL_ID);
+	_delay_ms(5);
+	return temp_value ;
+}
+

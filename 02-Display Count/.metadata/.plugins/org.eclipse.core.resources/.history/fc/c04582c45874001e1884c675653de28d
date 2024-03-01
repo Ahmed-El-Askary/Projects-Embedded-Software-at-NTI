@@ -1,0 +1,63 @@
+
+#include "DIO.h"
+#include "EXT_Interrupt.h"
+
+u8 count_flag = 0;
+u8 count_1 = 0;
+u8 count_2 = 0;
+
+void func (void)
+{
+	count_flag = 1;
+	TOGGLE_BIT(PORTC , PIN4);
+}
+
+void displayNumber(u8 number)
+{
+	PORTA = (PORTA & 0xFC) | 0x01;
+	PORTC = (PORTC & 0xF0) | (number % 10);
+	_delay_ms(2);
+
+	PORTA = (PORTA & 0xFC) | 0x02;
+	PORTC = (PORTC & 0xF0) | (number / 10);
+	_delay_ms(2);
+}
+
+int main(void)
+{
+	SREG |= (1 << 7);
+	DDRA |= 0x03;
+	DDRC |= 0x1F;
+
+	PORTA |= 0x03;
+	PORTC &= 0xF0;
+	DIO_setupPinDirection(PORTD_ID, PIN3, PIN_INPUT);
+	EXI_TriggerEdge(EX_INT1,RISING);
+	EXI_Enable(EX_INT1);
+	EXI_SetCallBack(EX_INT1,func);
+	DIO_setupPinDirection(PORTC_ID, PIN4, PIN_OUTPUT);
+
+
+	while (1)
+	{
+		if (count_flag == 1)
+		{
+			count_1++;
+			if (count_1 == 10)
+			{
+				count_1 = 0;
+				count_2++;
+				if (count_2 == 10)
+				{
+					count_2 = 0;
+				}
+			}
+			count_flag = 0;
+		}
+
+		displayNumber(count_2 * 10 + count_1);
+	}
+}
+
+
+

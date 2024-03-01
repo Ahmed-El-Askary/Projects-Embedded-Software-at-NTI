@@ -1,0 +1,47 @@
+/*
+ ============================================================================
+ Module      : TIMER
+ File Name   : TIMER_config.h
+ Description : Header file for the AVR TIMER driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+#ifndef TIMER_DRIVER_TIMER_CONFIG_H_
+#define TIMER_DRIVER_TIMER_CONFIG_H_
+
+#define  TIMER0_WRITE(x)        (TCNT0=(u8)x)
+#define  TIMER0_READ()          TCNT0
+#define  TIMER0_READ2(x)        (*(u8*)x=TCNT0)
+
+#define  TIMER0_C_WRITE(x)      (OCR0=(u8)x)
+#define  TIMER0_C_READ()        OCR0
+#define  TIMER0_C               OCR0
+#define  TIMER0_C_READ2(x)      (*(u8*)x=OCR0)
+
+#define  TIMER1_WRITE(x)        (TCNT1=(u16)x)
+#define  TIMER1_READ()          TCNT1
+#define  TIMER1_READ2(x)        (*(u16*)x=TCNT1)
+
+#define  TIMER1A_C_WRITE(x)     (OCR1A=(u16)x)
+#define  TIME1A_C_READ()        OCR1A
+#define  TIME1A_C               OCR1A
+#define  TIME1A_C_READ2(x)      (*(u16*)x=OCR1A)
+
+#define  TIMER1B_C_WRITE(x)     (OCR1B=(u16)x)
+#define  TIME1B_C_READ()        OCR1B
+#define  TIME1B_C               OCR1B
+#define  TIME1B_C_READ2(x)      (*(u16*)x=OCR1B)
+
+
+#define  TIMER2_WRITE(x)        (TCNT2=(u8)x)
+#define  TIMER2_READ()          TCNT2
+#define  TIMER2_READ2(x)        (*(u8*)x=TCNT2)
+
+
+
+
+
+
+
+#endif /* TIMER_DRIVER_TIMER_CONFIG_H_ */

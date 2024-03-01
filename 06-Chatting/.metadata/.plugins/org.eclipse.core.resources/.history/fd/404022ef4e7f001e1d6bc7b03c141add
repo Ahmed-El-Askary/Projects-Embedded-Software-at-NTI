@@ -1,0 +1,93 @@
+/*
+ ============================================================================
+ Module      : DIO
+ File Name   : DIO.h
+ Description : Header file for the AVR DIO driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+#ifndef DIO_H_
+#define DIO_H_
+
+
+#include "std_types.h"
+
+#include "DIO_config.h"
+#include "DIO_private.h"
+#include "common_macros.h"
+
+
+/*******************************************************************************
+ *                               Types Declaration                             *
+ *******************************************************************************/
+
+#define DDRX_START_IDX		4
+#define PINX_START_IDX		8
+
+/*Defining the values of the pins*/
+
+typedef enum{
+	PA0,PA1,PA2,PA3,PA4,PA5,PA6,PA7,
+	PB0,PB1,PB2,PB3,PB4,PB5,PB6,PB7,
+	PC0,PC1,PC2,PC3,PC4,PC5,PC6,PC7,
+	PD0,PD1,PD2,PD3,PD4,PD5,PD6,PD7
+	}dio_channel_t;
+
+typedef enum{
+	OUTPUT_L,OUTPUT_H,INPUT,INPUT_PULLUP
+	}dio_mode;
+/*
+Name : DIO_vSetPinValue
+
+Inputs : dio_channel_t Channel_ID
+		 dio_mode mode
+
+Outputs : none
+
+Description : This function changes the output of the pin
+*/
+void DIO_vSetPinValue(dio_channel_t Channel_ID,dio_mode mode);
+/*
+Name : DIO_vSetPinMode
+
+Inputs : dio_channel_t Channel_ID
+		 dio_mode mode
+
+Outputs : none
+
+Description : This function sets the direction of the pin
+*/
+void DIO_vSetPinMode(dio_channel_t Channel_ID,dio_mode mode);
+
+void DIO_vTogPin(dio_channel_t Channel_ID);
+/*
+Name : DIO_u8GetPinValue
+
+Inputs : dio_channel_t Channel_ID
+
+Outputs : u8 pin_value
+
+Description : This function reads the input of the pin
+*/
+u8 DIO_u8GetPinValue(dio_channel_t Channel_ID);
+
+#endif /* DIO_H_ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

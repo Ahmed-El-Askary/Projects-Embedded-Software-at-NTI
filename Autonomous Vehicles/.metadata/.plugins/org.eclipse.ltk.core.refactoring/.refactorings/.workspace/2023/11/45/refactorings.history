@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;CONTROL_ECU&apos; to &apos;MASTER&apos;" description="Rename resource &apos;CONTROL_ECU&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/CONTROL_ECU" name="MASTER" stamp="1699458813642" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;HMI_ECU&apos; to &apos;SLAVE1&apos;" description="Rename resource &apos;HMI_ECU&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/HMI_ECU" name="SLAVE1" stamp="1699458826226" updateReferences="true"/>
+</session>

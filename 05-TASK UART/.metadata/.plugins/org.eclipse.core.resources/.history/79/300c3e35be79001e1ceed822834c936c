@@ -1,0 +1,67 @@
+/*
+ ================================================================================================
+ Name        : Main_app.c
+ Author      : Ahmed El-Askary.
+ Description :
+ Date        : 24/10/2023.
+ ================================================================================================
+ */
+#include "UART.h"
+#include "DIO.h"
+
+u8 isequal (u8  *str)
+{
+	u8 open[]  = "open" ;
+	u8 closed[]  = "closed" ;
+
+	u8 flag  = 0 ;
+	for (int i = 0 ; i < 4 ; i++)
+	{
+		if ( str[i] != open[i] )
+		{
+			flag = 1 ;
+			break ;
+		}
+		if (flag == 0 )
+		{
+			return 1 ;
+		}
+
+	}
+
+
+
+}
+
+
+
+
+int main(void)
+{
+	u8 Str[20];
+	DIO_setupPinDirection(PORTA_ID, PIN0, PIN_OUTPUT);
+	CLEAR_BIT(PORTA , PIN0);
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+
+	while(1)
+	{
+		UART_sendString(Str);
+
+		UART_receiveString(Str);
+
+		if (     == "open")
+		{
+			SET_BIT(PORTA, PIN0);
+		}
+		if else (    "closed")
+		{
+			CLEAR_BIT(PORTA, PIN0);
+		}
+		else
+		{
+			TOGGLE_BIT(PORTA, PIN0);
+		}
+	}
+}

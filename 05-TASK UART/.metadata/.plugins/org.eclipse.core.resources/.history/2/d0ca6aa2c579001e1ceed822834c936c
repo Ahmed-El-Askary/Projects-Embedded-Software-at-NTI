@@ -1,0 +1,76 @@
+/*
+ ================================================================================================
+ Name        : Main_app.c
+ Author      : Ahmed El-Askary.
+ Description : Task UART
+ Date        : 24/10/2023.
+ ================================================================================================
+ */
+#include "UART.h"
+#include "DIO.h"
+
+u8 Open_closed(u8  *str)
+{
+	u8 open[]  = "open" ;
+	u8 closed[]  = "closed" ;
+	u8 flag  = 0 ;
+
+	for (u8 i = 0 ; i < 4 ; i++)
+	{
+		if ( str[i] != open[i] )
+		{
+			flag = 1 ;
+			break ;
+		}
+		if (flag == 0 )
+		{
+			return 1 ;
+		}
+
+	}
+
+	for (int i = 0 ; i < 6 ; i++)
+	{
+		if ( str[i] != closed[i] )
+		{
+			flag = 2 ;
+			break ;
+		}
+		if (flag == 1 )
+		{
+			return 2 ;
+		}
+		else
+		{
+			return 0 ;
+		}
+	}
+	return 0 ;
+}
+
+
+int main(void)
+{
+	u8 Str[20];
+	DIO_setupPinDirection(PORTA_ID, PIN0, PIN_OUTPUT);
+	CLEAR_BIT(PORTA,PIN0);
+
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+
+	while(1)
+	{
+		UART_sendString(Str);
+
+		UART_receiveString(Str);
+
+		if (Open_closed(Str) == 1)
+		{
+			SET_BIT(PORTA, PIN0);
+		}
+		else if(Open_closed(Str) == 2)
+		{
+			CLEAR_BIT(PORTA, PIN0);
+		}
+	}
+}

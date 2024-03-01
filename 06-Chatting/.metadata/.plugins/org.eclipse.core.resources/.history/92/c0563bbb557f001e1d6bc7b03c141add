@@ -1,0 +1,102 @@
+/*
+ ================================================================================================
+ Name        : Chat.c
+ Author      : Ahmed El-Askary.
+ Description : Chatting SPI UART MASTER
+ Date        : 24/10/2023.
+ ================================================================================================
+ */
+
+#include "UART.h"
+#include "LCD.h"
+#include "DIO.h"
+#include "EXT_Interrupt.h"
+#include <util/delay.h>
+
+u8 virtual_terminal_input[20];
+volatile u8 send_flag ;
+
+volatile u8 resived_data[20];
+volatile u8 show_flag ;
+
+
+void ex0(void)
+{
+	static u8 gg ;
+
+	resived_data[gg] = SPI_SendReceive_with_select_slave(5,1);
+
+	if ( resived_data[gg] == 0 )
+	{
+		show_flag = 1 ;
+	}
+	else
+	{
+		gg++;
+	}
+}
+
+
+void uart_function(void)
+{
+	static u8 counter;
+	virtual_terminal_input[counter] = UART_ReceiveNoBlock();
+	if ( virtual_terminal_input[counter] == 0x0D )
+	{
+		virtual_terminal_input[counter] = 0 ;
+		send_flag = 1 ;
+		counter = 0 ;
+	}
+	else if ( virtual_terminal_input[counter] == 127 || virtual_terminal_input[counter] == '\b' )
+	{
+		virtual_terminal_input[counter] = 0 ;
+
+		virtual_terminal_input[counter-1] = 0 ;
+		counter-- ;
+	}
+	else if( virtual_terminal_input[counter] != 0x0D )
+	{
+		counter++;
+	}
+
+}
+
+int main(void)
+{
+	DIO_Init();
+	LCD_Init();
+	UART_ConfigType UART_Config ={BIT_8 ,DISABLED_PARITY ,STOP_ONE_BIT ,9600 };
+	UART_init( &UART_Config );
+	SPI_initMaster();
+	UART_RX_SetCallBack(uart_function);
+	UART_RX_InterruptEnable();
+	EXI_TriggerEdge(EX_INT0,FALLING);
+	EXI_SetCallBack(EX_INT0,ex0);
+	EXI_Enable(EX_INT0);
+	sei();
+
+	u8 flag = 1;
+	while (1)
+	{
+
+		if ( send_flag )
+		{
+			for (u8 i=0;flag;i++ )
+			{
+				if ( virtual_terminal_input[i] == 0 )
+				{
+					flag = 0 ;
+				}
+				SPI_SendReceive_with_select_slave_without_return(virtual_terminal_input[i],1);
+			}
+			flag = 1 ;
+			send_flag = 0 ;
+			LCD_clearScreen();
+			_delay_ms(1000);
+			LCD_clearScreen();
+		}
+
+
+	}
+
+}

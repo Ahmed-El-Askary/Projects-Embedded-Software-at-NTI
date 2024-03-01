@@ -1,0 +1,35 @@
+10:45:34 **** Incremental Build of configuration Debug for project State_Motor_ws ****
+make all 
+Building file: ../APP/Main_app.c
+Invoking: AVR Compiler
+avr-gcc -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\MCAL\EXT_Interrupt_Driver" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\HAL\Motor_Driver" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\APP" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\LIBRARY" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\MCAL" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\MCAL\DIO_Driver" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\MCAL\EXT_Interrupt_Driver" -I"G:\Yarab\NTI G10\Projects NTI\State Motor\State_Motor_ws\MCAL\EXT_Interrupt_Driver" -Wall -g2 -gstabs -O0 -fpack-struct -fshort-enums -ffunction-sections -fdata-sections -std=gnu99 -funsigned-char -funsigned-bitfields -mmcu=atmega32 -DF_CPU=1000000UL -MMD -MP -MF"APP/Main_app.d" -MT"APP/Main_app.o" -c -o "APP/Main_app.o" "../APP/Main_app.c"
+Finished building: ../APP/Main_app.c
+ 
+Building target: State_Motor_ws.elf
+Invoking: AVR C Linker
+avr-gcc -Wl,-Map,State_Motor_ws.map -mmcu=atmega32 -o "State_Motor_ws.elf"  ./MCAL/EXT_Interrupt_Driver/EXT_Interrupt.o  ./MCAL/DIO_Driver/DIO.o  ./HAL/Motor_Driver/dc_motor.o  ./APP/Main_app.o   
+Finished building target: State_Motor_ws.elf
+ 
+Invoking: AVR Create Extended Listing
+avr-objdump -h -S State_Motor_ws.elf  >"State_Motor_ws.lss"
+Finished building: State_Motor_ws.lss
+ 
+Create Flash image (ihex format)
+avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex State_Motor_ws.elf  "State_Motor_ws.hex"
+Finished building: State_Motor_ws.hex
+ 
+Invoking: Print Size
+avr-size --format=avr --mcu=atmega32 State_Motor_ws.elf
+AVR Memory Usage
+----------------
+Device: atmega32
+
+Program:    3602 bytes (11.0% Full)
+(.text + .data + .bootloader)
+
+Data:          8 bytes (0.4% Full)
+(.data + .bss + .noinit)
+
+
+Finished building: sizedummy
+ 

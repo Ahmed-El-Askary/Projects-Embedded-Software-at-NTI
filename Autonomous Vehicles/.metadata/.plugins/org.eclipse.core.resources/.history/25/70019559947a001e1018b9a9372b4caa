@@ -1,0 +1,387 @@
+/*
+ ================================================================================================
+ Name        : control_ecu_main.c
+ Author      : Ahmed El-Askary.
+ Description :
+ Date        : 5/6/2023.
+ ================================================================================================
+ */
+#include <util/delay.h>
+#include <avr/io.h>
+#include "uart.h"
+#include "external_eeprom.h"
+#include "dc_motor.h"
+#include "TIMER.h"
+#include <avr/interrupt.h>
+#include "twi.h"
+
+/*******************************************************************************
+ *                                Definitions                                  *
+ *******************************************************************************/
+#define READY_CONTROL_ECU                               0
+#define ENTER_NEW_PASSWORD                              2
+#define RE_ENTER_NEW_PASSWORD                           3
+#define OPEN_DOOR                                       4
+#define CLOSE_DOOR                                      5
+#define BUZZER_ON                                       6
+#define MAIN_OPTIONS                                    7
+
+#define MATCHED_PASSWORD                                0
+#define UNMATCHED_PASSWORD                              1
+
+/*******************************************************************************
+ *                                Global Variables                             *
+ *******************************************************************************/
+
+static volatile u16 password;
+static volatile u16 save_password;
+static volatile u16 new_password;
+static volatile u16 reenter_password;
+static volatile u16 eepromSave_password;
+static volatile u16 eepromSave_location1;
+static volatile u16 eepromSave_location2;
+static volatile u16 KEY_NUM;
+static volatile u16 counter_password;
+static volatile u16 g_tick;
+
+
+
+/*******************************************************************************
+ *                         Functions Prototypes                                   *
+ *******************************************************************************/
+void Control_createPassword(void);
+void Create_newPassword(void);
+u8 reenter_newPassword(void);
+void save_newPassword(void);
+u8 main_options(void);
+void Control_openDoor(void);
+void enter_newPassword(void);
+u8 compare_newPassword (void);
+void unmached_pass(void);
+void Control_changePassword(void);
+
+/*******************************************************************************
+ *                          Functions Definitions                              *
+ *******************************************************************************/
+
+/*
+ * Description :
+ * Control create Password .
+ */
+Timer1_ConfigType Timer1_Config={0,3200,F_CPU_1024,CompareMode};
+void Control_createPassword(void)
+{
+	while(1)
+	{
+		UART_sendByte(ENTER_NEW_PASSWORD);
+		Create_newPassword();
+		UART_sendByte(RE_ENTER_NEW_PASSWORD);
+
+		uint8 again =reenter_newPassword();
+		if(again==UNMATCHED_PASSWORD)
+		{
+			UART_sendByte(ENTER_NEW_PASSWORD);
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+/*
+ * Description :
+ * Create Password .
+ */
+void Create_newPassword(void)
+{
+	uint16 i,recieve  ;
+	new_password =0;
+	UART_sendByte(READY_CONTROL_ECU);
+
+	for(i=0;i<5;i++)
+	{
+		recieve= UART_recieveByte();
+		if(recieve =='=')
+		{
+			break;
+		}
+		else
+		{
+			new_password =(new_password*10)+recieve;
+		}
+	}
+}
+
+/*
+ * Description :
+ * Reenter password .
+ */
+uint8 reenter_newPassword(void)
+{
+	uint8 i,  recieve;
+	reenter_password = 0;
+	UART_sendByte(READY_CONTROL_ECU);
+
+	for(i = 0 ; i < 5; i++)
+	{
+		recieve =UART_recieveByte();
+		if(recieve =='=')
+		{
+			break;
+		}
+		else
+		{
+			reenter_password =(reenter_password * 10)+ recieve;
+	}
+	}
+	if (new_password ==reenter_password)
+	{
+		save_newPassword();
+		return MATCHED_PASSWORD;
+	}
+	else
+	{
+		return UNMATCHED_PASSWORD;
+	}
+}
+
+/*
+ * Description :
+ * Store Password .
+ */
+void save_newPassword(void)
+{
+	eepromSave_location1 =263 ;
+	eepromSave_password= new_password;
+	eepromSave_location2= eepromSave_location1;
+
+	while(eepromSave_password !=  0 )
+	{
+		EEPROM_writeByte(eepromSave_location2,eepromSave_password %10);
+		_delay_ms(10);
+		eepromSave_location2++;
+		eepromSave_password= eepromSave_password / 10;
+	}
+	eepromSave_location2--;
+}
+
+/*
+ * Description :
+ * Main Options , 1. Open door , 2. Change Password    .
+ */
+uint8 main_options(void)
+{
+	UART_sendByte(READY_CONTROL_ECU);
+
+	while(1)
+	{
+		KEY_NUM = UART_recieveByte();
+		if(	KEY_NUM == '+'  ||   KEY_NUM == '-' )
+		{
+			break;
+		}
+	}
+	return KEY_NUM;
+}
+
+/*
+ * Description :
+ * Timer One Count    .
+ */
+
+void timer1(void)
+{
+	g_tick++;
+}
+
+/*
+ * Description :
+ *  Open Door.
+ */
+void open_door(void)
+{
+	DcMotor_Rotate(CW, 100);
+	Timer1_setCallBack(timer1);
+	Timer1_init(&Timer1_Config);
+	while(g_tick <  15);
+
+	Timer1_deInit();
+	g_tick =0;
+	DcMotor_Rotate(STOP, 0);
+	Timer1_setCallBack(timer1);
+	Timer1_init(&Timer1_Config);
+	while(g_tick < 3);
+
+	Timer1_deInit();
+	g_tick =0;
+}
+
+/*
+ * Description :
+ * Close Door.
+ */
+void close_door(void)
+{
+	DcMotor_Rotate(ACW, 100);
+	Timer1_setCallBack(timer1);
+	Timer1_init(&Timer1_Config);
+	while(g_tick < 15);
+
+	Timer1_deInit();
+	g_tick = 0 ;
+	DcMotor_Rotate(STOP, 0);
+}
+
+/*
+ * Description :
+ * Control ECU Open Door.
+ */
+void Control_openDoor(void)
+{
+	while(1)
+	{
+		UART_sendByte(ENTER_NEW_PASSWORD);
+		enter_newPassword();
+
+		if (compare_newPassword() ==  MATCHED_PASSWORD)
+		{
+			counter_password = 0 ;
+			UART_sendByte(OPEN_DOOR);
+			open_door();
+			UART_sendByte(CLOSE_DOOR);
+			close_door();
+			return;
+		}
+		else
+		{
+			unmached_pass();
+		}
+	}
+}
+
+/*
+ * Description :
+ * Enter Password
+ */
+
+void enter_newPassword(void)
+{
+
+	uint8 i,recieve;
+	password = 0 ;
+	UART_sendByte(0);
+
+	for( i = 0 ; i < 5 ; i++ )
+	{
+		recieve= UART_recieveByte();
+		if(recieve== '=')
+		{
+			break;
+		}
+		else
+			password= (password*10)+recieve;
+	}
+}
+
+/*
+ * Description :
+ * Compare Password
+ */
+
+uint8 compare_newPassword (void)
+{
+    save_password=0;
+    uint16 i ;
+	uint8 comp = 0 ;
+
+	for( i = eepromSave_location2 ; i >= eepromSave_location1 ; i-- )
+	{
+		EEPROM_readByte(i ,  &comp );
+		save_password = (save_password*10)+comp;
+	}
+	if(password == save_password)
+	{
+		return MATCHED_PASSWORD;
+	}
+	else
+	{
+		return UNMATCHED_PASSWORD;
+	}
+}
+/*
+ * Description :
+ * Unmatched Password
+ */
+
+void unmached_pass(void)
+{
+	counter_password++;
+
+	if( counter_password == 3 )
+	{
+		counter_password = 0 ;
+		UART_sendByte(BUZZER_ON) ;
+		Buzzer_on() ;
+		Timer1_setCallBack(timer1);
+		Timer1_init(&Timer1_Config);
+		while(g_tick < 60);
+
+		Timer1_deInit();
+		g_tick =0;
+		Buzzer_off();
+	}
+	return;
+}
+/*
+ * Description :
+ * Control ECU Change Password
+ */
+void Control_changePassword(void)
+{
+	while(1)
+	{
+		UART_sendByte(ENTER_NEW_PASSWORD) ;
+		enter_newPassword() ;
+		if ( compare_newPassword() == MATCHED_PASSWORD )
+		{
+			counter_password = 0 ;
+			Control_createPassword() ;
+			return;
+		}
+	}
+}
+
+
+/*******************************************************************************
+ *                        Main Control ECU Functions                           *
+ *******************************************************************************/
+int main(void)
+{
+	Buzzer_init();
+	DcMotor_init();
+	SREG  |= (1<<7) ;
+
+	UART_ConfigType UART_Config ={BIT_8 , DISABLED_PARITY , STOP_ONE_BIT , 9600 };
+	UART_init( &UART_Config );
+
+	TWI_ConfigType TWI_Config ={ 0x01 , 0x02 } ;
+	TWI_init( &TWI_Config ) ;
+
+	while( UART_recieveByte() != 0 ) ;
+	Control_createPassword();
+
+	while(1)
+	{
+		UART_sendByte(MAIN_OPTIONS);
+
+		if(main_options() == '+' )
+		{
+			Control_openDoor();
+		}
+
+		else
+		{
+			Control_changePassword();
+		}
+	}
+}

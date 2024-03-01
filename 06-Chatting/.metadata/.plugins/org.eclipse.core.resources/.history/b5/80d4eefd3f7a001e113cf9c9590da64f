@@ -1,0 +1,42 @@
+/*
+ * SEVENSEGMENT.h
+ *
+ * Created: 10/22/2023 9:17:33 AM
+ *  Author: hp
+ */ 
+
+
+#ifndef SEVENSEGMENT_H_
+#define SEVENSEGMENT_H_
+
+#include "DIO.h"
+
+//CLR PIN TO USE
+#define COM1 PIN3_ID
+#define COM2 PIN2_ID
+#define COM3 PIN5_ID
+#define COM4 PIN6_ID
+
+//OUTPUT DATA PINS
+#define DEC1 PIN0_ID
+#define DEC2 PIN1_ID
+#define DEC3 PIN2_ID
+#define DEC4 PIN4_ID
+
+//segment port
+#define SEGPORT1 PORTB
+typedef enum
+{
+	SEG1,
+	SEG2,
+	SEG3,
+	SEG4
+}seg_select_t;
+
+void SegmentInit(void);
+
+void SegmentDisplayOne(seg_select_t select,u8 data);
+
+void SegmentDisplay(u16 data);
+
+#endif /* SEVENSEGMENT_H_ */

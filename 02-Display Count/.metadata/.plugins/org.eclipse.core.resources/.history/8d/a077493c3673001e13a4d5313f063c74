@@ -1,0 +1,23 @@
+/*
+ ============================================================================
+ Module      : External Interrupt
+ File Name   : EXT_Interrupt_praivte.h.h
+ Description : Header file for the AVR External Interrupt driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+#ifndef EXT_INTERRUPT_DRIVER_EXT_INTERRUPT_PRAIVTE_H_
+#define EXT_INTERRUPT_DRIVER_EXT_INTERRUPT_PRAIVTE_H_
+
+
+#define  MCUCR      *((volatile u8*)  0x55)
+#define  MCUCSR     *((volatile u8*)  0x54)
+#define  GICR       *((volatile u8*)  0x5B)
+#define  GIFR       *((volatile u8*)  0x5A)
+#define  SREG       *((volatile u8*)  0x5F)
+
+void __vector_2(void)__attribute__((signal));
+
+
+#endif /* EXT_INTERRUPT_DRIVER_EXT_INTERRUPT_PRAIVTE_H_ */

@@ -1,0 +1,153 @@
+/*
+ ============================================================================
+ Module      : KEYPAD
+ File Name   : KEYPAD.c
+ Description : Source file for the AVR KEYPAD driver
+ Author      : AHMED Abdel-Monem El-Askary
+ Date        : 16/10/2023
+ ============================================================================
+ */
+
+#include "KEYPAD.h"
+#include "DIO.h"
+#include "util/delay.h"
+
+
+#ifndef STANDARD_KEYPAD
+
+#if (KEYPAD_NUM_COLS == 3)
+
+static u8 KEYPAD_4x3(u8 button_number);
+#elif (KEYPAD_NUM_COLS == 4)
+
+static u8 KEYPAD_4x4(u8 button_number);
+#endif
+
+#endif /* STANDARD_KEYPAD */
+
+
+
+u8 KEYPAD_getPressedKey (void)
+{
+	u8 col , row ;
+
+	DIO_setupPinDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID,   PIN_INPUT);
+	DIO_setupPinDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+1, PIN_INPUT);
+	DIO_setupPinDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+2, PIN_INPUT);
+	DIO_setupPinDirection(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+3, PIN_INPUT);
+
+	DIO_setupPinDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID,  PIN_INPUT );
+	DIO_setupPinDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID+2,PIN_INPUT );
+	DIO_setupPinDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID+3,PIN_INPUT );
+
+#if (KEYPAD_NUM_COLS == 4)
+	DIO_setupPinDirection(KEYPAD_COL_PORT_ID, KEYPAD_FIRST_COL_PIN_ID+4,PIN_INPUT );
+#endif
+
+	while (1)
+	{
+		for (row = 0 ; row < KEYPAD_NUM_ROWS ; row++)
+		{
+			DIO_setupPinDirection(KEYPAD_ROW_PORT_ID,KEYPAD_FIRST_ROW_PIN_ID+row,PIN_OUTPUT);
+			DIO_writePin(KEYPAD_ROW_PORT_ID, KEYPAD_FIRST_ROW_PIN_ID+row, KEYPAD_BUTTON_PRESSED);
+			for(col=0 ; col<KEYPAD_NUM_COLS ; col++)
+			{
+				if(DIO_readPin(KEYPAD_COL_PORT_ID,KEYPAD_FIRST_COL_PIN_ID+col) == KEYPAD_BUTTON_PRESSED)
+				{
+#if (KEYPAD_NUM_COLS == 3)
+#ifdef STANDARD_KEYPAD
+					return ((row*KEYPAD_NUM_COLS)+col+1);
+#else
+					return KEYPAD_4x3((row*KEYPAD_NUM_COLS)+col+1);
+#endif
+#elif (KEYPAD_NUM_COLS == 4)
+#ifdef STANDARD_KEYPAD
+					return ((row*KEYPAD_NUM_COLS)+col+1);
+#else
+					return KEYPAD_4x4((row*KEYPAD_NUM_COLS)+col+1);
+#endif
+#endif
+				}
+			}
+			DIO_setupPinDirection(KEYPAD_ROW_PORT_ID,KEYPAD_FIRST_ROW_PIN_ID+row,PIN_INPUT);
+			_delay_ms(5);
+		}
+
+
+	}
+
+}
+
+
+#ifndef STANDARD_KEYPAD
+
+#if (KEYPAD_NUM_COLS == 3)
+
+static uint8 KEYPAD_4x3(uint8 button_number)
+{
+	uint8 keypad_button = 0;
+	switch(button_number)
+	{
+	case 10: keypad_button = '*';
+	break;
+	case 11: keypad_button = 0;
+	break;
+	case 12: keypad_button = '#';
+	break;
+	default: keypad_button = button_number;
+	break;
+	}
+	return keypad_button;
+}
+
+#elif (KEYPAD_NUM_COLS == 4)
+
+static u8 KEYPAD_4x4(u8 button_number)
+{
+	u8 keypad_button = 0;
+	switch(button_number)
+	{
+	case 1: keypad_button = 7;
+	break;
+	case 2: keypad_button = 8;
+	break;
+	case 3: keypad_button = 9;
+	break;
+	case 4: keypad_button = '%';
+	break;
+	case 5: keypad_button = 4;
+	break;
+	case 6: keypad_button = 5;
+	break;
+	case 7: keypad_button = 6;
+	break;
+	case 8: keypad_button = '*';
+	break;
+	case 9: keypad_button = 1;
+	break;
+	case 10: keypad_button = 2;
+	break;
+	case 11: keypad_button = 3;
+	break;
+	case 12: keypad_button = '-';
+	break;
+	case 13: keypad_button = 13;
+	break;
+	case 14: keypad_button = 0;
+	break;
+	case 15: keypad_button = '=';
+	break;
+	case 16: keypad_button = '+';
+	break;
+	default: keypad_button = button_number;
+	break;
+	}
+	return keypad_button;
+}
+
+#endif
+
+#endif /* STANDARD_KEYPAD */
+
+
+
